@@ -153,7 +153,6 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
 </header>
 <div class="container">
 <section class="hero-signal bullish"><div class="hero-signal-top"><div class="hero-direction">日圓偏多</div><div class="hero-strength">●●●○○ <span>3/5</span></div></div><div class="hero-factors"><span class="factor-tag bullish">▲ 央行資產負債表</span><span class="factor-tag bullish">▲ COT大戶持倉</span><span class="factor-tag bearish">▼ 技術面均線位置</span><span class="factor-tag neutral">— 干預偵測</span><span class="factor-tag neutral">— Werner信用框架</span></div><div class="hero-warning">⚠ 52週定位：近一年當中有 96% 的時間比現在更空（代表大家目前偏看多日圓，位置</div></section>
-<section class="cot-section"><div class="sec-header">🏦 大戶持倉 COT</div><div class="sec-body"><div class="cot-summary">報告日期 2026-03-17 ／ 淨多頭 30,099 口（+27,809） ／ 52週 P52</div><div id="cot-chart" class="chart-box"></div></div></section>
 
 <section>
   <div class="sec-header">📰 本週重要事件</div>
@@ -161,14 +160,20 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
 <div class="green">2. 聯準會官員密集演說與美國週請失業金數據：美方鷹派立場持續強化利差擴大預期，支撐美元強勢並加深日圓貶值壓力。</div>
 <div>3. 中東地緣政治風險推升油價與避險需求：能源價格上漲加劇日本貿易逆差，避險資金流向美元導致日圓匯率持續承壓。</div></div>
 </section>
+<section class="cot-section"><div class="sec-header">🏦 大戶持倉 COT</div><div class="sec-body"><div class="cot-summary">報告日期 2026-03-17 ／ 淨多頭 30,099 口（+27,809） ／ 52週 P52</div><div id="cot-chart" class="chart-box"></div></div></section>
+
+<section>
+  <div class="sec-header">📈 策略回測</div>
+  <div class="sec-body"><div id="backtest-chart" class="chart-box backtest"></div></div>
+</section>
 <details class="details-panel"><summary>▶ 完整分析</summary><div class="details-content">
 <section>
   <div class="sec-header">🎯 本週判斷</div>
-  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span>聯準會印鈔更快，美元供給增加比日圓多，對日圓是利多訊號。</span></div>
-<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強，因為聯準會印鈔比日銀快，長期對日圓有利。</span></div>
-<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國利率比日本高約2%，通常會導致資金流向美元，但這只是市場常見看法，不能單獨判斷匯率。</span></div>
-<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">COT（大戶持倉報告）顯示多頭部位增加，市場看日圓升值，但要小心部位過於集中。</span></div>
-<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>聯準會官員的演說影響市場預期，如果他們支持繼續印鈔，對日圓可能有影響。</span></div></div>
+  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span class="green">美國聯準會最近印鈔速度比日本快，對日圓升值有利。</span></div>
+<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強，因為聯準會印鈔快過日銀，長期看日圓有升值潛力。</span></div>
+<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國利率比日本高2.166%，但這只是通常的看法，不能單靠這個來決定匯率走勢。</span></div>
+<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="orange">COT（期貨持倉報告）顯示大戶看多日圓，但注意部位過多，有擁擠風險。</span></div>
+<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>關注美元兌日圓接近160的心理關口，警惕政府可能的干預行動。</span></div></div>
 </section>
 <section>
   <div class="sec-header">📐 技術面區間</div>
@@ -197,11 +202,6 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
 <div>03/24 🇺🇸 Flash Services PMI　預測：52.0　→ 若高於預測，利空日圓</div>
 <div>03/26 🇺🇸 Unemployment Claims　預測：211K　→ 若低於預測（就業強），利空日圓</div></div>
 </section></div></details>
-
-<section>
-  <div class="sec-header">📈 策略回測</div>
-  <div class="sec-body"><div id="backtest-chart" class="chart-box backtest"></div></div>
-</section>
 </div>
 <footer>本報告僅供個人參考，不構成投資建議</footer>
 <script>
