@@ -46,6 +46,9 @@ th { background: var(--surface); color: var(--dim); font-weight: 500; }
 .werner-card:last-child { border-bottom: none; }
 .w-name { font-weight: 500; margin-bottom: 3px; }
 .w-val { font-size: 14px; }
+.verdict-block { padding: 6px 0; border-bottom: 1px solid var(--border); }
+.verdict-block:last-child { border-bottom: none; }
+.verdict-label { color: var(--blue); font-weight: 600; margin-right: 4px; }
 .signal-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
 .signal-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 3px 10px; font-size: 12px; }
 footer { color: var(--border); font-size: 11px; text-align: center; padding: 20px 16px 0; }
@@ -58,8 +61,8 @@ footer { color: var(--border); font-size: 11px; text-align: center; padding: 20p
   <div class="container">
     <h1>💴 日圓週報　2026年03月24日</h1>
     <div class="price-row">
-      <span class="price-big">USD/JPY 158.66</span>
-      <span class="price-change green">↓ 日圓升值 0.22（0.14%）</span>
+      <span class="price-big">USD/JPY 158.62</span>
+      <span class="price-change green">↓ 日圓升值 0.27（0.17%）</span>
       <span class="price-date">2026年03月24日</span>
     </div>
     
@@ -77,15 +80,15 @@ footer { color: var(--border); font-size: 11px; text-align: center; padding: 20p
 </section>
 <section>
   <div class="sec-header">🎯 本週判斷</div>
-  <div class="sec-body"><div class="green">【央行在做什麼】這週聯準會(Fed)印鈔速度比日本央行(日銀)快，代表美元供應增加，對日圓是利多（偏向升值）。</div>
-<div class="green">【本週方向】日圓偏強。因為日銀減少資產，而聯準會增加資產，長線上日圓更值錢。</div>
-<div class="red">【利率差距說什麼】美國利率比日本高約2.166%，一般來說這意味著市場會覺得美元更有吸引力，但這只是市場常見看法，不一定導致日圓貶值。</div>
-<div class="green">【大戶在做什麼】大戶目前普遍看漲日圓，持有大量日圓部位，表示市場預期日圓可能會升值。但是部位過於集中，投資人要小心有可能行情會反轉。</div>
-<div>【這週要盯什麼】市場正在關注美元兌日圓是否突破160這個關鍵心理關口，可以影響日圓的走勢，注意大幅波動風險。</div></div>
+  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span>最近聯準會狂印鈔，速度比日本央行還快，美元供應多，理論上應讓日圓更值錢。</span></div>
+<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強，因為美元印得多，日圓對它相對更有價值。</span></div>
+<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span class="red">美國利率高過日本2.166%，這讓大家覺得投資美元更划算，但這只是一般看法，不代表日圓一定會貶值。</span></div>
+<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">大戶現在大量押注日圓會升值，這代表市場上很多人都認為日圓會上升，但也要小心，因為太多人看多時，可能正是行情反轉的時候。</span></div>
+<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span class="red">注意美元兌日圓是否會挑戰160這個重要心理價位，因為這可能逼得日本政府出手干預以拖住日圓繼續貶值。</span></div></div>
 </section>
 <section>
   <div class="sec-header">📐 技術面區間</div>
-  <div class="sec-body"><table class='tech-table'><tr><td class="mono green">158.00</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.55</td><td>MA50 中期均線</td></tr><tr><td class="mono green">155.86</td><td>20日低點</td></tr><tr class="current-row"><td class="mono blue">158.66</td><td>▶ 現價</td></tr><tr><td class="mono red">159.79</td><td>20日高點</td></tr></table></div>
+  <div class="sec-body"><table class='tech-table'><tr><td class="mono green">158.00</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.55</td><td>MA50 中期均線</td></tr><tr><td class="mono green">155.86</td><td>20日低點</td></tr><tr class="current-row"><td class="mono blue">158.62</td><td>▶ 現價</td></tr><tr><td class="mono red">159.79</td><td>20日高點</td></tr></table></div>
 </section>
 <section>
   <div class="sec-header">🏛 央行訊號 &amp; 干預偵測</div>
@@ -101,8 +104,8 @@ footer { color: var(--border); font-size: 11px; text-align: center; padding: 20p
 </section>
 <section>
   <div class="sec-header">📊 訊號一致性</div>
-  <div class="sec-body"><div class="green">本週訊號一致性：偏向日圓升值（2/3 個訊號）</div>
-<div class="green">看漲訊號：央行資產負債表、COT大戶持倉　看跌訊號：技術面均線位置</div></div>
+  <div class="sec-body"><div>本週訊號一致性：方向分歧（各 2/4 個訊號）</div>
+<div class="green">看漲訊號：央行資產負債表、COT大戶持倉　看跌訊號：RSI技術指標、技術面均線位置</div></div>
 </section>
 <section>
   <div class="sec-header">📅 下週行事曆</div>
