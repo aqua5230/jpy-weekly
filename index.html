@@ -21,7 +21,6 @@ header h1 { font-size: 22px; font-weight: 700; }
 .price-row { display: flex; align-items: baseline; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
 .price-big { font-size: 42px; font-weight: 700; font-family: "Menlo", monospace; }
 .price-change { font-size: 18px; }
-.price-date { color: var(--dim); font-size: 13px; margin-left: auto; }
 .danger { color: var(--orange); font-size: 13px; margin-top: 6px; }
 section { margin: 0 0 4px; border-bottom: 1px solid var(--border); padding: 14px 0; }
 .sec-header { font-size: 13px; color: var(--dim); margin-bottom: 10px; letter-spacing: .05em; }
@@ -40,6 +39,7 @@ section { margin: 0 0 4px; border-bottom: 1px solid var(--border); padding: 14px
 table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
 th, td { padding: 7px 10px; border: 1px solid var(--border); text-align: left; vertical-align: top; }
 th { background: var(--surface); color: var(--dim); font-weight: 500; }
+.tech-table-wrap { overflow-x: auto; }
 .tech-table td:first-child { font-family: "Menlo", monospace; width: 90px; }
 .current-row { background: #1c2d42; }
 .werner-card { padding: 8px 0; border-bottom: 1px solid var(--border); }
@@ -51,7 +51,7 @@ th { background: var(--surface); color: var(--dim); font-weight: 500; }
 .verdict-label { color: var(--blue); font-weight: 600; margin-right: 4px; }
 .signal-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
 .signal-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 3px 10px; font-size: 12px; }
-footer { color: var(--border); font-size: 11px; text-align: center; padding: 20px 16px 0; }
+footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 16px 0; }
 @media(max-width:480px){ .price-big{font-size:34px;} table{font-size:12px;} th,td{padding:5px 7px;} }
 </style>
 </head>
@@ -63,7 +63,6 @@ footer { color: var(--border); font-size: 11px; text-align: center; padding: 20p
     <div class="price-row">
       <span class="price-big">USD/JPY 158.56</span>
       <span class="price-change green">日圓升值 0.33（0.21%）</span>
-      <span class="price-date">2026年03月24日</span>
     </div>
     
   </div>
@@ -80,15 +79,15 @@ footer { color: var(--border); font-size: 11px; text-align: center; padding: 20p
 </section>
 <section>
   <div class="sec-header">🎯 本週判斷</div>
-  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span>美國聯準會(Fed)最近的資產負債表擴張速度比日本央行(日銀)要快，這表示美元供給增加比日圓多，對日圓來說較有利，偏向日圓走強。</span></div>
-<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強。因為美元供給增加比日圓快，短期內看好日圓升值。</span></div>
-<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span class="red">美國的利率比日本高出2.166%，這通常意味着美元比較有吸引力，不過利差擴大不一定代表日圓會貶值，不能單獨靠這個來判斷。</span></div>
-<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">根據COT(美國商品期貨委員會的大戶持倉報告)，目前大戶普遍看漲日圓，部位顯示多頭增加；不過，當大家都在看漲時，反而要小心回撤。</span></div>
-<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>本週要注意美元兌日圓挑戰160的心理關卡，這可能引發日本政府的匯市干預，影響市場波動。</span></div></div>
+  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span class="green">最近的情況是，美國的聯準會（Fed）印鈔比日本的央行（日銀）快，這造成美金的供應比日圓多，所以對日圓來說是個好消息，偏向日圓升值。</span></div>
+<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強，因為美國和日本的央行政策讓美金供應增加，這對日圓有利。</span></div>
+<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國的利率比日本高大約2%，這通常代表持有美金更划算，但這觀點得打折扣，不能單獨靠這個來判斷日圓的走勢。</span></div>
+<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">根據COT（大戶持倉報告），目前市場上大戶對日圓是偏向看漲，持倉有點多，意味著市場普遍看好，但過度集中可能意味著反轉風險。</span></div>
+<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>要特別注意美元兌日圓是否突破160，因為這可能引發日本政府的干預，並影響市場對日圓的信心。</span></div></div>
 </section>
 <section>
   <div class="sec-header">📐 技術面區間</div>
-  <div class="sec-body"><table class='tech-table'><tr><td class="mono green">157.99</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.55</td><td>MA50 中期均線</td></tr><tr><td class="mono green">155.86</td><td>20日低點</td></tr><tr class="current-row"><td class="mono blue">158.56</td><td>▶ 現價</td></tr><tr><td class="mono red">159.79</td><td>20日高點</td></tr></table></div>
+  <div class="sec-body"><div class='tech-table-wrap'><table class='tech-table'><tr><td class="mono red">159.79</td><td>20日高點</td></tr><tr class="current-row"><td class="mono blue">158.56</td><td>▶ 現價</td></tr><tr><td class="mono green">157.99</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.55</td><td>MA50 中期均線</td></tr><tr><td class="mono green">155.86</td><td>20日低點</td></tr></table></div></div>
 </section>
 <section>
   <div class="sec-header">🏛 央行訊號 &amp; 干預偵測</div>
@@ -104,12 +103,14 @@ footer { color: var(--border); font-size: 11px; text-align: center; padding: 20p
 </section>
 <section>
   <div class="sec-header">📊 訊號一致性</div>
-  <div class="sec-body"><div class="green">本週訊號一致性：偏向日圓升值（2/3 個訊號）</div>
-<div class="green">看漲訊號：央行資產負債表、COT大戶持倉　看跌訊號：技術面均線位置</div></div>
+  <div class="sec-body"><div>本週訊號一致性：方向分歧（各 2/4 個訊號）</div>
+<div class="green">看漲訊號：央行資產負債表、COT大戶持倉　看跌訊號：RSI技術指標、技術面均線位置</div></div>
 </section>
 <section>
   <div class="sec-header">📅 下週行事曆</div>
-  <div class="sec-body"><div>行事曆暫時無法取得（429 Client Error: Too Many Requests for url: https://nfs.faireconomy.media/ff_calendar_thisweek.json）</div></div>
+  <div class="sec-body"><div>03/24 🇺🇸 Flash Manufacturing PMI　預測：51.5　→ 若高於預測，利空日圓</div>
+<div>03/24 🇺🇸 Flash Services PMI　預測：52.0　→ 若高於預測，利空日圓</div>
+<div>03/26 🇺🇸 Unemployment Claims　預測：211K　→ 若低於預測（就業強），利空日圓</div></div>
 </section>
 </div>
 <footer>本報告僅供個人參考，不構成投資建議</footer>
