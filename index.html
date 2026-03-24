@@ -41,6 +41,22 @@ header h1 { font-size: 22px; font-weight: 700; }
 .hero-strength { font-size: 14px; color: #8b949e; }
 .stars { font-size: 20px; margin-left: 8px; letter-spacing: 2px; color: #f0883e; }
 .hero-line { font-size: 17px; color: #cdd9e5; line-height: 1.6; margin-top: 8px; font-weight: 500; }
+.op-card {
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin: 0 0 18px 0;
+  border: 1px solid var(--border);
+}
+.op-card.long { background: linear-gradient(135deg, #0f2a1a 0%, #163624 100%); border-color: #2ea043; }
+.op-card.short { background: linear-gradient(135deg, #301212 0%, #3d1b1b 100%); border-color: #f85149; }
+.op-card.wait { background: linear-gradient(135deg, #23262d 0%, #2f353f 100%); border-color: #6e7681; }
+.op-header { font-size: 13px; color: rgba(230, 237, 243, 0.72); letter-spacing: .05em; margin-bottom: 8px; }
+.op-direction { font-size: 20px; font-weight: 800; line-height: 1.4; }
+.op-card.long .op-direction { color: #7ee787; }
+.op-card.short .op-direction { color: #ff7b72; }
+.op-card.wait .op-direction { color: #c9d1d9; }
+.op-reason { font-size: 15px; color: #e6edf3; margin-top: 8px; line-height: 1.6; }
+.op-disclaimer { font-size: 12px; color: rgba(230, 237, 243, 0.72); margin-top: 12px; line-height: 1.5; }
 section { margin: 0 0 4px; border-bottom: 1px solid var(--border); padding: 14px 0; }
 .cot-section { padding-top: 20px; }
 .sec-header { font-size: 13px; color: var(--dim); margin-bottom: 10px; letter-spacing: .05em; }
@@ -81,30 +97,30 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
   <div class="container">
     <h1>💴 日圓週報　2026年03月24日</h1>
     <div class="price-row">
-      <span class="price-big">USD/JPY 158.62</span>
-      <span class="price-change green">日圓升值 0.27（0.17%）</span>
+      <span class="price-big">USD/JPY 158.65</span>
+      <span class="price-change green">日圓升值 0.24（0.15%）</span>
     </div>
     
   </div>
 </header>
 <div class="container">
-<div class="hero-signal bearish"><div class="hero-direction">📉 日圓偏空</div><div class="hero-strength">訊號強度<span class="stars">★★★☆☆</span></div><div class="hero-line">日圓偏強。由於美國印鈔速度加快，相對減少了日圓的貶值壓力。</div></div>
+<div class="hero-signal bearish"><div class="hero-direction">📉 日圓偏空</div><div class="hero-strength">訊號強度<span class="stars">★★★☆☆</span></div><div class="hero-line"></div></div>
 <section class="cot-section"><div class="sec-header">🏦 大戶持倉 COT</div><div class="sec-body"><div>報告日期 2026-03-17　非商業淨多頭 30,099 口，較上週 +27,809 口</div>
 <div>多頭 61,703　空頭 31,604</div>
 <div>52週定位：近一年當中有 96% 的時間比現在更空（代表大家目前偏看多日圓，位置不低）</div>
 <div class="green">大家幾乎都在看漲，位置擁擠，反而要小心大跌</div>
-<div class="orange">⚠️ 注意：目前持倉過度集中在同一邊，歷史上這種情況常出現在行情反轉前</div><div style="margin-top:10px"><div style="font-size:12px;color:var(--dim);margin-bottom:4px">近8週持倉趨勢</div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-7W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-6W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-5W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-4W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-3W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-2W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-1W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">本週</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:100%;background:var(--blue);opacity:1;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--white)">+30k</div></div></div><div id="cot-chart" style="height:320px;margin-top:12px"></div></div></section>
+<div class="orange">⚠️ 注意：目前持倉過度集中在同一邊，歷史上這種情況常出現在行情反轉前</div><div style="margin-top:10px"><div style="font-size:12px;color:var(--dim);margin-bottom:4px">近8週持倉趨勢</div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-7W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-6W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-5W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-4W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-3W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-2W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-1W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">本週</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:100%;background:var(--blue);opacity:1;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--white)">+30k</div></div></div><div id="cot-chart" style="height:320px;margin-top:12px"></div></div></section><section class="op-card wait"><div class="op-header">本週操作建議</div><div class="op-direction">觀望</div><div class="op-reason">理由：日圓偏強但訊號不夠明確，COT 擁擠風險高</div><div class="op-disclaimer">⚠️ 本建議僅供參考，非投資建議，投資人須自行判斷風險</div></section>
 <section>
   <div class="sec-header">🎯 本週判斷</div>
-  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span>這週觀察到聯準會（美國央行）擴大資產負債表的速度比日本央行快，這表示美元的供應增速高於日圓，對日圓相對有利。</span></div>
-<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強。由於美國印鈔速度加快，相對減少了日圓的貶值壓力。</span></div>
-<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國利率比日本高約2.166%。這通常意味著持有日圓的收益不如美元，但這只是市場的一種看法，不能單獨用來判斷匯率走勢。</span></div>
-<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">最新的COT（大戶持倉報告）顯示投資人偏向看漲日圓，大量部位押注日圓升值。但得注意，這麼多人都一邊倒地看好日圓，反而要小心行情可能反轉。</span></div>
-<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>留意美元兌日圓是否逼近160這個心理關口，這可能引發政府干預，影響匯市波動。</span></div></div>
+  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span>美國聯準會印鈔速度比日銀快，對日圓有利。</span></div>
+<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強。因為美國聯準會擴大資產較快，讓美元相對貶值。</span></div>
+<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國利率比日本高2.166%。這常被認為美元有吸引力，但不能單靠這點來判斷匯率。</span></div>
+<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">美國商品期貨委員會的報告顯示大戶持有大量看漲日圓的部位，代表市場看好日圓升值，但要小心擁擠風險可能帶來反轉。</span></div>
+<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>USD/JPY 若突破160可能引起政府干預，影響市場走向。</span></div></div>
 </section>
 <section>
   <div class="sec-header">📐 技術面區間</div>
-  <div class="sec-body"><div class='tech-table-wrap'><table class='tech-table'><tr><td class="mono red">159.79</td><td>20日高點</td></tr><tr class="current-row"><td class="mono blue">158.62</td><td>▶ 現價</td></tr><tr><td class="mono green">157.80</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.54</td><td>MA50 中期均線</td></tr><tr><td class="mono green">154.63</td><td>20日低點</td></tr></table></div></div>
+  <div class="sec-body"><div class='tech-table-wrap'><table class='tech-table'><tr><td class="mono red">159.79</td><td>20日高點</td></tr><tr class="current-row"><td class="mono blue">158.65</td><td>▶ 現價</td></tr><tr><td class="mono green">158.00</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.55</td><td>MA50 中期均線</td></tr><tr><td class="mono green">155.86</td><td>20日低點</td></tr></table></div></div>
 </section>
 <section>
   <div class="sec-header">🏛 央行訊號 &amp; 干預偵測</div>
@@ -120,8 +136,8 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
 </section>
 <section>
   <div class="sec-header">📊 訊號一致性</div>
-  <div class="sec-body"><div>本週訊號一致性：方向分歧（各 2/4 個訊號）</div>
-<div class="green">看漲訊號：央行資產負債表、COT大戶持倉　看跌訊號：RSI技術指標、技術面均線位置</div></div>
+  <div class="sec-body"><div class="green">本週訊號一致性：偏向日圓升值（2/3 個訊號）</div>
+<div class="green">看漲訊號：央行資產負債表、COT大戶持倉　看跌訊號：技術面均線位置</div></div>
 </section>
 <section>
   <div class="sec-header">📅 下週行事曆</div>
