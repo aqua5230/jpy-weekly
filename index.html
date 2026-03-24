@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel='preconnect' href='https://fonts.googleapis.com'>
 <link href='https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap' rel='stylesheet'>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <title>日圓週報 2026年03月24日</title>
 <style>
 :root {
@@ -22,6 +23,35 @@ header h1 { font-size: 22px; font-weight: 700; }
 .price-big { font-size: 42px; font-weight: 700; font-family: "Menlo", monospace; }
 .price-change { font-size: 18px; }
 .danger { color: var(--orange); font-size: 13px; margin-top: 6px; }
+.hero-signal {
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.hero-signal.bullish { background: linear-gradient(135deg, #0d2b1d 0%, #1a3a2a 100%); border: 1px solid #3fb950; }
+.hero-signal.bearish { background: linear-gradient(135deg, #2b0d0d 0%, #3a1a1a 100%); border: 1px solid #f85149; }
+.hero-signal.neutral { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #58a6ff; }
+.hero-direction { font-size: 28px; font-weight: 700; letter-spacing: 1px; }
+.hero-signal.bullish .hero-direction { color: #3fb950; }
+.hero-signal.bearish .hero-direction { color: #f85149; }
+.hero-signal.neutral .hero-direction { color: #58a6ff; }
+.hero-strength { font-size: 14px; color: #8b949e; }
+.stars { font-size: 20px; margin-left: 8px; letter-spacing: 2px; color: #f0883e; }
+.hero-line { font-size: 17px; color: #cdd9e5; line-height: 1.6; margin-top: 8px; font-weight: 500; }
+.detail-section { border: 1px solid #30363d; border-radius: 8px; padding: 0; margin-top: 8px; }
+.detail-toggle {
+  padding: 14px 20px;
+  font-size: 15px; font-weight: 600; color: #cdd9e5;
+  cursor: pointer; list-style: none;
+  background: #161b22; border-radius: 8px;
+}
+.detail-toggle::-webkit-details-marker { display: none; }
+.detail-section[open] .detail-toggle { border-radius: 8px 8px 0 0; border-bottom: 1px solid #30363d; }
+.toggle-hint { font-size: 12px; color: #8b949e; font-weight: 400; }
+details > *:not(summary) { padding: 0 12px; }
 section { margin: 0 0 4px; border-bottom: 1px solid var(--border); padding: 14px 0; }
 .sec-header { font-size: 13px; color: var(--dim); margin-bottom: 10px; letter-spacing: .05em; }
 .sec-body { font-size: 14px; word-break: break-word; overflow-wrap: break-word; }
@@ -62,28 +92,29 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
     <h1>💴 日圓週報　2026年03月24日</h1>
     <div class="price-row">
       <span class="price-big">USD/JPY 158.51</span>
-      <span class="price-change green">日圓升值 0.37（0.24%）</span>
+      <span class="price-change green">日圓升值 0.38（0.24%）</span>
     </div>
     
   </div>
 </header>
 <div class="container">
-
+<div class="hero-signal bearish"><div class="hero-direction">📉 日圓偏空</div><div class="hero-strength">訊號強度<span class="stars">★★★☆☆</span></div><div class="hero-line">美國聯準會（Fed）最近印鈔速度比日本央行（日銀）快，美元供應增加較快，所以看起來對日圓有利（日圓可能升值）。</div></div>
+<details class="detail-section" open><summary class="detail-toggle">📊 完整分析報告 <span class="toggle-hint">（點擊收合）</span></summary>
 <section>
   <div class="sec-header">🏦 大戶持倉 COT</div>
   <div class="sec-body"><div>報告日期 2026-03-17　非商業淨多頭 30,099 口，較上週 +27,809 口</div>
 <div>多頭 61,703　空頭 31,604</div>
 <div>52週定位：近一年當中有 96% 的時間比現在更空（代表大家目前偏看多日圓，位置不低）</div>
 <div class="green">大家幾乎都在看漲，位置擁擠，反而要小心大跌</div>
-<div class="orange">⚠️ 注意：目前持倉過度集中在同一邊，歷史上這種情況常出現在行情反轉前</div><div style="margin-top:10px"><div style="font-size:12px;color:var(--dim);margin-bottom:4px">近8週持倉趨勢</div><div style="display:flex;align-items:center;gap:6px;margin:2px 0"><div style="font-size:11px;color:var(--dim);width:24px;text-align:right">-7W</div><div style="position:relative;flex:1;height:10px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:10px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:11px;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:2px 0"><div style="font-size:11px;color:var(--dim);width:24px;text-align:right">-6W</div><div style="position:relative;flex:1;height:10px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:10px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:11px;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:2px 0"><div style="font-size:11px;color:var(--dim);width:24px;text-align:right">-5W</div><div style="position:relative;flex:1;height:10px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:10px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:11px;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:2px 0"><div style="font-size:11px;color:var(--dim);width:24px;text-align:right">-4W</div><div style="position:relative;flex:1;height:10px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:10px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:11px;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:2px 0"><div style="font-size:11px;color:var(--dim);width:24px;text-align:right">-3W</div><div style="position:relative;flex:1;height:10px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:10px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:11px;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:2px 0"><div style="font-size:11px;color:var(--dim);width:24px;text-align:right">-2W</div><div style="position:relative;flex:1;height:10px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:10px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:11px;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:2px 0"><div style="font-size:11px;color:var(--dim);width:24px;text-align:right">-1W</div><div style="position:relative;flex:1;height:10px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:10px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:11px;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:2px 0"><div style="font-size:11px;color:var(--dim);width:24px;text-align:right">本週</div><div style="position:relative;flex:1;height:10px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:10px;width:100%;background:var(--blue);opacity:1;border-radius:2px"></div></div><div style="font-size:11px;color:var(--white)">+30k</div></div></div></div>
+<div class="orange">⚠️ 注意：目前持倉過度集中在同一邊，歷史上這種情況常出現在行情反轉前</div><div style="margin-top:10px"><div style="font-size:12px;color:var(--dim);margin-bottom:4px">近8週持倉趨勢</div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-7W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-6W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-5W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-4W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-3W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-2W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-1W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">本週</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:100%;background:var(--blue);opacity:1;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--white)">+30k</div></div></div><div id="cot-chart" style="height:320px;margin-top:12px"></div></div>
 </section>
 <section>
   <div class="sec-header">🎯 本週判斷</div>
-  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span>這週看起來聯準會（美國的央行）印鈔票的速度比日本央行要快。這意味著美元供給增加得比日圓快，理論上對日圓來說會有點撐住的效果。</span></div>
-<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強。聯準會的動作讓美元供給增加，所以日圓可能有機會小升一點。</span></div>
-<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國的利率比日本高大約2.166%。這通常讓美元看起來更有吸引力，但別忘了，這只是常見的看法，不能單靠利率差來決定匯率走勢。</span></div>
-<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="orange">根據COT（美國商品期貨委員會的持倉報告），大戶對日圓有偏多頭部位，意思是他們有不少人覺得日圓會升。不過，要小心這可能過度擁擠，歷史上這種時候行情可能反轉。</span></div>
-<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span class="orange">這週最重要的是美元兌日圓是否會挑戰160的心理價位。這會讓市場保持高度戒備，因為一旦突破可能逼近日本政府干預的警戒點。</span></div></div>
+  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span class="green">美國聯準會（Fed）最近印鈔速度比日本央行（日銀）快，美元供應增加較快，所以看起來對日圓有利（日圓可能升值）。</span></div>
+<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強。因為美國印鈔比日本快，所以長期來看，日圓有升值的壓力。</span></div>
+<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國利率比日本高2.166%，傳統看法是美元會比較強，但這個指標不能單獨用來預測匯率走勢。</span></div>
+<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">市場大戶（COT，重要持倉報告）近期對日圓轉為看漲，且多頭部位增加很多，這種部位集中現象要小心，過去常發生在行情反轉前。</span></div>
+<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>要注意USD/JPY挑戰160的心理關口，因為一旦突破可能會引發更大的市場反應，甚至可能引起日本政府的干預行動。</span></div></div>
 </section>
 <section>
   <div class="sec-header">📐 技術面區間</div>
@@ -112,7 +143,140 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
 <div>03/24 🇺🇸 Flash Services PMI　預測：52.0　→ 若高於預測，利空日圓</div>
 <div>03/26 🇺🇸 Unemployment Claims　預測：211K　→ 若低於預測（就業強），利空日圓</div></div>
 </section>
+<section>
+  <div class="sec-header">📈 策略回測</div>
+  <div class="sec-body"><div id="backtest-chart" style="height:350px;margin-top:12px"></div></div>
+</section></details>
 </div>
 <footer>本報告僅供個人參考，不構成投資建議</footer>
+<script>
+(function(){
+const theme = {paper_bgcolor:'#1a1a2e', plot_bgcolor:'#16213e', font:{color:'#eee'}};
+const config = {responsive: true};
+const cotData = {"dates": ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"], "values": [2243, 1694, 1669, 2119, 1958, 2105, 2290, 30099], "positive": [2243, 1694, 1669, 2119, 1958, 2105, 2290, 30099], "negative": [null, null, null, null, null, null, null, null], "ma52": [2243.0, 1968.5, 1868.67, 1931.25, 1936.6, 1964.67, 2011.14, 5522.12], "mean": 5522.125, "std": 9291.6911, "warn_high": 19459.6616, "warn_low": -8415.4116, "signal_text": "⚠ 空頭過度擁擠，軋空風險升高"};
+const latest_val = cotData.values[cotData.values.length - 1];
+const latest_date = cotData.dates[cotData.dates.length - 1];
+const cot_traces = [
+{
+  x: cotData.dates, y: cotData.values.map(v => v >= 0 ? v : null),
+  type: "scatter", mode: "none", name: "淨空（看跌日圓）",
+  fill: "tozeroy", fillcolor: "rgba(248,81,73,0.25)",
+  showlegend: false
+},
+{
+  x: cotData.dates, y: cotData.values.map(v => v < 0 ? v : null),
+  type: "scatter", mode: "none", name: "淨多（看漲日圓）",
+  fill: "tozeroy", fillcolor: "rgba(63,185,80,0.25)",
+  showlegend: false
+},
+{
+  x: cotData.dates, y: cotData.values,
+  type: "scatter", mode: "lines", name: "淨部位",
+  line: {color: "#e8b04b", width: 2},
+  hovertemplate: "%{x}<br>淨部位: %{y:,.0f} 口<extra></extra>"
+},
+{
+  x: cotData.dates, y: cotData.ma52,
+  type: "scatter", mode: "lines", name: "52週均線",
+  line: {color: "#8b949e", dash: "dot", width: 1.5},
+  hovertemplate: "均線: %{y:,.0f}<extra></extra>"
+}
+];
+const pct_to_warn = cotData.warn_high > 0 ? ((cotData.warn_high - latest_val) / Math.abs(cotData.warn_high) * 100).toFixed(0) : null;
+const now_label = pct_to_warn !== null ? `現在 ${(latest_val/1000).toFixed(0)}k　距空頭警戒 ${pct_to_warn}%` : `現在 ${(latest_val/1000).toFixed(0)}k`;
+Plotly.newPlot("cot-chart", cot_traces, {
+title: {text: cotData.signal_text, font: {size: 15, color: "#cdd9e5"}},
+annotations: [{
+  x: cotData.dates[Math.floor(cotData.dates.length * 0.08)], y: cotData.warn_high,
+  text: "⚠ 空頭警戒線", showarrow: false,
+  font: {color: "#f85149", size: 12, bold: true},
+  bgcolor: "rgba(40,10,10,0.85)", bordercolor: "#f85149", borderwidth: 1, borderpad: 4
+}, {
+  x: cotData.dates[Math.floor(cotData.dates.length * 0.08)], y: cotData.warn_low,
+  text: "⚠ 多頭警戒線", showarrow: false,
+  font: {color: "#3fb950", size: 12, bold: true},
+  bgcolor: "rgba(10,30,10,0.85)", bordercolor: "#3fb950", borderwidth: 1, borderpad: 4
+}, {
+  x: latest_date, y: latest_val,
+  text: now_label,
+  showarrow: true, arrowhead: 3, arrowsize: 1.2, arrowcolor: "#e8b04b", ax: -120, ay: -30,
+  font: {color: "#e8b04b", size: 13},
+  bgcolor: "rgba(26,26,46,0.92)", bordercolor: "#e8b04b", borderwidth: 2, borderpad: 6
+}],
+shapes: [{
+  type: "line", x0: cotData.dates[0], x1: cotData.dates[cotData.dates.length - 1],
+  y0: 0, y1: 0,
+  line: {color: "#58a6ff", width: 1.5, dash: "solid"}
+}, {
+  type: "line", x0: cotData.dates[0], x1: cotData.dates[cotData.dates.length - 1],
+  y0: cotData.warn_high, y1: cotData.warn_high,
+  line: {color: "#f85149", width: 2, dash: "dot"}
+}, {
+  type: "line", x0: cotData.dates[0], x1: cotData.dates[cotData.dates.length - 1],
+  y0: cotData.warn_low, y1: cotData.warn_low,
+  line: {color: "#3fb950", width: 2, dash: "dot"}
+}],
+margin: {l: 65, r: 20, t: 55, b: 45},
+xaxis: {gridcolor: "#2d333b", showgrid: true, tickfont: {size: 11}},
+yaxis: {gridcolor: "#2d333b", tickformat: ",.0f", tickfont: {size: 11}},
+hovermode: "x unified",
+legend: {orientation: "h", y: -0.15, x: 0, font: {size: 11}},
+...theme
+}, config);
+const backtestData = {"dates": ["2023-04-10", "2023-04-17", "2023-04-24", "2023-05-01", "2023-05-08", "2023-05-15", "2023-05-22", "2023-05-29", "2023-06-05", "2023-06-12", "2023-06-19", "2023-06-26", "2023-07-03", "2023-07-10", "2023-07-17", "2023-07-24", "2023-07-31", "2023-08-07", "2023-08-14", "2023-08-21", "2023-08-28", "2023-09-04", "2023-09-11", "2023-09-18", "2023-09-25", "2023-10-02", "2023-10-30", "2023-11-06", "2023-11-13", "2023-11-20", "2024-01-15", "2024-01-22", "2024-01-29", "2024-02-05", "2024-02-12", "2024-02-19", "2024-02-26", "2024-03-11", "2024-03-18", "2024-03-25", "2024-04-29", "2024-05-06", "2024-05-13", "2024-05-20", "2024-05-27", "2024-06-03", "2024-06-10", "2024-06-17", "2024-06-24", "2024-07-01", "2024-07-08", "2024-07-22", "2024-07-29", "2024-08-05", "2024-08-12", "2024-08-19", "2024-08-26", "2024-09-02", "2024-09-09", "2024-09-16", "2024-09-23", "2024-09-30", "2024-10-07", "2024-10-14", "2024-11-04", "2024-11-25", "2024-12-02", "2024-12-09", "2025-01-20", "2025-02-03", "2025-02-17", "2025-02-24", "2025-03-03", "2025-03-10", "2025-03-17", "2025-03-24", "2025-03-31", "2025-04-07", "2025-04-14", "2025-04-21", "2025-04-28", "2025-05-05", "2025-05-19", "2025-06-09", "2025-06-16", "2025-07-07", "2025-07-14", "2025-07-21", "2025-08-04", "2025-08-11", "2025-08-18", "2025-08-25", "2025-09-01", "2025-09-08", "2025-09-15", "2025-09-22", "2025-09-29", "2025-10-20", "2025-10-27", "2025-11-24", "2025-12-01", "2025-12-08", "2025-12-15", "2025-12-22", "2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19", "2026-01-26", "2026-02-09"], "strategy": [0.2691, 1.8834, 0.7698, 1.4424, 3.1091, 5.1196, 4.6114, 4.1779, 6.009, 7.4066, 7.8401, 6.2033, 3.6622, 5.9679, 5.4858, 5.9417, 8.296, 8.6771, 9.4395, 9.2668, 10.4484, 10.441, 10.8221, 11.6368, 11.5247, 11.775, 13.3877, 11.8985, 11.8461, 9.863, 9.8964, 10.0373, 10.7493, 11.4094, 11.6022, 11.3129, 9.0658, 10.8016, 10.7481, 10.9384, 12.9101, 12.8376, 13.7728, 13.9975, 13.5988, 14.1062, 15.817, 16.6216, 16.5056, 14.4107, 14.157, 19.4664, 19.402, 18.6033, 21.2463, 19.7176, 22.8627, 24.1575, 21.5303, 22.9323, 17.2514, 16.9203, 16.6224, 14.4696, 15.7295, 15.9073, 18.8053, 20.8997, 20.2873, 19.5485, 18.4397, 20.4717, 19.9916, 19.4183, 19.0185, 21.3221, 24.1419, 25.5147, 23.9742, 22.8783, 22.4637, 22.2944, 21.0162, 19.3591, 20.5309, 22.3808, 21.4448, 21.2301, 20.8006, 20.6643, 20.7185, 21.0223, 21.2752, 21.4797, 22.8008, 21.0552, 24.1343, 25.1035, 24.6372, 24.0026, 24.3179, 25.9087, 24.9644, 25.148, 26.0173, 26.2575, 24.286, 23.5117, 25.4753, 23.544], "benchmark": [0.0, -0.2691, -1.8747, -0.8022, -1.4644, -3.0833, -4.973, -4.5136, -4.1179, -5.8032, -7.0451, -7.4202, -6.0151, -3.7663, -5.9068, -5.4787, -5.8872, -7.9786, -8.3025, -8.9457, -8.8021, -9.7883, -9.7822, -10.0936, -10.7545, -10.6649, -10.7517, -12.0393, -10.8841, -10.8424, -10.0519, -10.0793, -10.1946, -10.7756, -11.3074, -11.4609, -11.2315, -10.611, -12.0337, -11.9913, -12.9799, -14.5265, -14.4716, -15.1804, -15.3479, -15.0519, -15.4313, -16.6992, -17.278, -17.1957, -15.7067, -13.517, -9.4947, -9.5435, -10.1485, -8.1463, -9.3044, -6.9218, -5.9408, -7.9311, -6.869, -11.1727, -11.4236, -11.6493, -13.4929, -11.855, -11.9904, -14.1909, -15.4468, -12.9641, -11.7166, -12.5354, -11.0348, -11.3894, -11.8127, -12.108, -10.4068, -8.3245, -7.3107, -8.4484, -9.2577, -9.5638, -7.7735, -8.7705, -10.0197, -10.3129, -11.6893, -11.0139, -11.0091, -10.6938, -10.5931, -10.6332, -10.8581, -11.0444, -11.1944, -12.1602, -10.9115, -14.1571, -14.8273, -16.0198, -15.5922, -15.8068, -16.8842, -16.2608, -16.3839, -16.9646, -17.1229, -15.8288, -15.3045, -14.1769], "win_rate": 53.63636363636364, "sharpe": 0.6914734928051688, "total_return": 23.54400654079216, "benchmark_return": -14.110604778327321};
+const s_last = backtestData.strategy[backtestData.strategy.length - 1];
+const b_last = backtestData.benchmark[backtestData.benchmark.length - 1];
+const d_last = backtestData.dates[backtestData.dates.length - 1];
+const outperf = (s_last - b_last).toFixed(1);
+const annotations = [
+{x: d_last, y: s_last, text: `+${s_last.toFixed(1)}%`,
+ showarrow: true, arrowhead: 2, arrowcolor: "#58a6ff", ax: 30, ay: -20,
+ font: {color: "#58a6ff", size: 13, bold: true}, bgcolor: "rgba(26,26,46,0.85)", bordercolor: "#58a6ff", borderwidth: 1},
+{x: d_last, y: b_last, text: `${b_last.toFixed(1)}%`,
+ showarrow: true, arrowhead: 2, arrowcolor: "#f85149", ax: 30, ay: 20,
+ font: {color: "#f85149", size: 13}, bgcolor: "rgba(26,26,46,0.85)", bordercolor: "#f85149", borderwidth: 1}
+];
+if (backtestData.total_return !== null) {
+  const b_ret = backtestData.benchmark_return !== null ? backtestData.benchmark_return.toFixed(1) : "—";
+  const wr = backtestData.win_rate !== null ? backtestData.win_rate.toFixed(1) : "—";
+  const sr = backtestData.sharpe !== null ? backtestData.sharpe.toFixed(2) : "—";
+  annotations.push({
+    x: 1, y: 1, xref: "paper", yref: "paper",
+    xanchor: "right", yanchor: "top",
+    text: `策略 +${backtestData.total_return.toFixed(1)}%<br>基準 ${b_ret}%<br>勝率 ${wr}%<br>Sharpe ${sr}`,
+    showarrow: false,
+    font: {size: 12, color: "#cdd9e5"},
+    bgcolor: "rgba(26,26,46,0.9)",
+    bordercolor: "#58a6ff",
+    borderwidth: 1,
+    borderpad: 8,
+    align: "left"
+  });
+}
+Plotly.newPlot("backtest-chart", [
+// fill between lines
+{x: [...backtestData.dates, ...backtestData.dates.slice().reverse()],
+ y: [...backtestData.strategy, ...backtestData.benchmark.slice().reverse()],
+ fill: "toself", fillcolor: "rgba(88,166,255,0.08)",
+ line: {color: "transparent"}, showlegend: false, hoverinfo: "skip"},
+{x: backtestData.dates, y: backtestData.strategy, type: "scatter", mode: "lines",
+ name: `策略 (${s_last.toFixed(1)}%)`, line: {color: "#58a6ff", width: 2.5},
+ hovertemplate: "%{x}<br>策略: %{y:.1f}%<extra></extra>"},
+{x: backtestData.dates, y: backtestData.benchmark, type: "scatter", mode: "lines",
+ name: `Buy & Hold JPY (${b_last.toFixed(1)}%)`, line: {color: "#f85149", width: 2},
+ hovertemplate: "%{x}<br>B&H: %{y:.1f}%<extra></extra>"}
+], {
+title: {text: `Werner 訊號策略 vs 持有日圓　超越基準 +${outperf}%`, font: {size: 13, color: "#cdd9e5"}},
+annotations,
+margin: {l: 56, r: 80, t: 55, b: 45},
+xaxis: {gridcolor: "#2d333b"},
+yaxis: {gridcolor: "#2d333b",
+ zeroline: true, zerolinecolor: "#58a6ff", zerolinewidth: 1.5, ticksuffix: "%"},
+legend: {orientation: "h", y: -0.15, x: 0},
+hovermode: "x unified",
+...theme
+}, config);
+})();
+</script>
 </body>
 </html>
