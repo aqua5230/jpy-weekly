@@ -11,7 +11,7 @@
 :root {
   --bg: #0d1117; --surface: #161b22; --border: #30363d;
   --white: #e6edf3; --dim: #8b949e;
-  --green: #3fb950; --red: #f85149; --yellow: #d29922;
+  --green: #3fb950; --red: #f85149; --yellow: #e8b04b;
   --orange: #f0883e; --blue: #58a6ff;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,41 +24,57 @@ header h1 { font-size: 22px; font-weight: 700; }
 .price-change { font-size: 18px; }
 .danger { color: var(--orange); font-size: 13px; margin-top: 6px; }
 .hero-signal {
-  border-radius: 12px;
-  padding: 24px 28px;
-  margin: 0 0 20px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin: 0 0 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
-.hero-signal.bullish { background: linear-gradient(135deg, #0d2b1d 0%, #1a3a2a 100%); border: 1px solid #3fb950; }
-.hero-signal.bearish { background: linear-gradient(135deg, #2b0d0d 0%, #3a1a1a 100%); border: 1px solid #f85149; }
-.hero-signal.neutral { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #58a6ff; }
-.hero-direction { font-size: 28px; font-weight: 700; letter-spacing: 1px; }
-.hero-signal.bullish .hero-direction { color: #3fb950; }
-.hero-signal.bearish .hero-direction { color: #f85149; }
-.hero-signal.neutral .hero-direction { color: #58a6ff; }
-.hero-strength { font-size: 14px; color: #8b949e; }
-.stars { font-size: 20px; margin-left: 8px; letter-spacing: 2px; color: #f0883e; }
-.hero-line { font-size: 17px; color: #cdd9e5; line-height: 1.6; margin-top: 8px; font-weight: 500; }
-.op-card {
-  border-radius: 14px;
-  padding: 18px 20px;
-  margin: 0 0 18px 0;
-  border: 1px solid var(--border);
+.hero-signal.bullish { border-left-color: var(--green); }
+.hero-signal.bearish { border-left-color: var(--red); }
+.hero-signal.neutral { border-left-color: var(--blue); }
+.hero-signal-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.hero-direction { font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: 0.02em; }
+.hero-signal.bullish .hero-direction,
+.hero-signal.bullish .hero-strength { color: var(--green); }
+.hero-signal.bearish .hero-direction,
+.hero-signal.bearish .hero-strength { color: var(--red); }
+.hero-signal.neutral .hero-direction,
+.hero-signal.neutral .hero-strength { color: var(--blue); }
+.hero-strength { font-size: 14px; font-weight: 600; white-space: nowrap; }
+.hero-strength span { margin-left: 6px; }
+.hero-factors { display: flex; flex-wrap: wrap; gap: 6px; }
+.factor-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin: 2px;
+  border: 1px solid;
 }
-.op-card.long { background: linear-gradient(135deg, #0f2a1a 0%, #163624 100%); border-color: #2ea043; }
-.op-card.short { background: linear-gradient(135deg, #301212 0%, #3d1b1b 100%); border-color: #f85149; }
-.op-card.wait { background: linear-gradient(135deg, #23262d 0%, #2f353f 100%); border-color: #6e7681; }
-.op-header { font-size: 13px; color: rgba(230, 237, 243, 0.72); letter-spacing: .05em; margin-bottom: 8px; }
-.op-direction { font-size: 20px; font-weight: 800; line-height: 1.4; }
-.op-card.long .op-direction { color: #7ee787; }
-.op-card.short .op-direction { color: #ff7b72; }
-.op-card.wait .op-direction { color: #c9d1d9; }
-.op-reason { font-size: 15px; color: #e6edf3; margin-top: 8px; line-height: 1.6; }
-.op-disclaimer { font-size: 12px; color: rgba(230, 237, 243, 0.72); margin-top: 12px; line-height: 1.5; }
+.factor-tag.bullish { background: #1a3a2a; border-color: #3fb950; color: #3fb950; }
+.factor-tag.bearish { background: #3a1a1a; border-color: #f85149; color: #f85149; }
+.factor-tag.neutral { background: #21262d; border-color: #484f58; color: #8b949e; }
+.hero-warning {
+  padding: 9px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(240, 136, 62, 0.45);
+  background: rgba(240, 136, 62, 0.1);
+  color: #f2cc9b;
+  font-size: 13px;
+  line-height: 1.5;
+}
 section { margin: 0 0 4px; border-bottom: 1px solid var(--border); padding: 14px 0; }
 .cot-section { padding-top: 20px; }
+.cot-summary {
+  color: var(--white);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
 .sec-header { font-size: 13px; color: var(--dim); margin-bottom: 10px; letter-spacing: .05em; }
 .sec-body { font-size: 14px; word-break: break-word; overflow-wrap: break-word; }
 .sec-body div { padding: 2px 0; }
@@ -87,8 +103,40 @@ th { background: var(--surface); color: var(--dim); font-weight: 500; }
 .verdict-label { color: var(--blue); font-weight: 600; margin-right: 4px; }
 .signal-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
 .signal-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 3px 10px; font-size: 12px; }
+.details-panel {
+  margin: 8px 0 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.details-panel summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+}
+.details-panel summary::-webkit-details-marker { display: none; }
+.details-content { padding: 0 16px 10px; }
+.details-content section:last-child { border-bottom: none; }
+.section-lead {
+  font-size: 13px;
+  color: var(--dim);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.section-split { height: 8px; }
+.chart-box { height: 320px; margin-top: 12px; }
+.chart-box.backtest { height: 350px; }
 footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 16px 0; }
-@media(max-width:480px){ .price-big{font-size:34px;} table{font-size:12px;} th,td{padding:5px 7px;} }
+@media(max-width:480px){
+  .price-big{font-size:34px;}
+  table{font-size:12px;}
+  th,td{padding:5px 7px;}
+  .hero-signal-top { flex-direction: column; }
+}
 </style>
 </head>
 <body>
@@ -97,42 +145,46 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
   <div class="container">
     <h1>💴 日圓週報　2026年03月24日</h1>
     <div class="price-row">
-      <span class="price-big">USD/JPY 158.69</span>
-      <span class="price-change green">日圓升值 0.20（0.12%）</span>
+      <span class="price-big">USD/JPY 158.65</span>
+      <span class="price-change green">日圓升值 0.24（0.15%）</span>
     </div>
     
   </div>
 </header>
 <div class="container">
-<div class="hero-signal bullish" style="border-radius:16px;padding:22px 24px;margin:0 0 20px 0;background:linear-gradient(135deg, #0d2b1d 0%, #1a3a2a 100%);border:1px solid rgba(255,255,255,0.08);box-shadow:0 14px 32px rgba(0,0,0,0.24);display:flex;flex-direction:column;gap:14px;"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div style="font-size:28px;font-weight:700;line-height:1.15;letter-spacing:0.2px;color:#3fb950;">📈 日圓偏多</div><div style="display:inline-flex;align-items:center;justify-content:flex-end;gap:8px;font-size:13px;color:rgba(255,255,255,0.72);white-space:nowrap;text-align:right;"><span>訊號強度</span><span style="font-size:20px;letter-spacing:2px;color:#f0883e;">★★★☆☆</span></div></div><div style="height:1px;background:rgba(255,255,255,0.1);"></div><div style="display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;"><span style="display:inline-flex;align-items:center;gap:6px;border-radius:12px;padding:3px 10px;font-size:12px;line-height:1.4;background:rgba(63,185,80,0.15);border:1px solid #3fb950;color:#3fb950;"><span style="width:7px;height:7px;border-radius:50%;background:#3fb950;flex:0 0 auto;"></span>央行資產負債表</span><span style="display:inline-flex;align-items:center;gap:6px;border-radius:12px;padding:3px 10px;font-size:12px;line-height:1.4;background:rgba(63,185,80,0.15);border:1px solid #3fb950;color:#3fb950;"><span style="width:7px;height:7px;border-radius:50%;background:#3fb950;flex:0 0 auto;"></span>COT大戶持倉</span><span style="display:inline-flex;align-items:center;gap:6px;border-radius:12px;padding:3px 10px;font-size:12px;line-height:1.4;background:rgba(248,81,73,0.15);border:1px solid #f85149;color:#f85149;"><span style="width:7px;height:7px;border-radius:50%;background:#f85149;flex:0 0 auto;"></span>技術面均線位置</span></div></div>
-<section class="cot-section"><div class="sec-header">🏦 大戶持倉 COT</div><div class="sec-body"><div>報告日期 2026-03-17　非商業淨多頭 30,099 口，較上週 +27,809 口</div>
-<div>多頭 61,703　空頭 31,604</div>
-<div>52週定位：近一年當中有 96% 的時間比現在更空（代表大家目前偏看多日圓，位置不低）</div>
-<div class="green">大家幾乎都在看漲，位置擁擠，反而要小心大跌</div>
-<div class="orange">⚠️ 注意：目前持倉過度集中在同一邊，歷史上這種情況常出現在行情反轉前</div><div style="margin-top:10px"><div style="font-size:12px;color:var(--dim);margin-bottom:2px">近8週持倉趨勢</div><div style="font-size:11px;color:var(--dim);margin-bottom:6px">（正值 = 大戶淨多頭口數，負值 = 淨空頭，數字越大代表方向越集中）</div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-7W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-6W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-5W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:5%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-4W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-3W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-2W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:6%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">-1W</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:7%;background:var(--green);opacity:0.5;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--dim)">+2k</div></div><div style="display:flex;align-items:center;gap:6px;margin:1px 0"><div style="font-size:10px;color:var(--dim);width:24px;text-align:right;line-height:1.1">本週</div><div style="position:relative;flex:1;height:8px"><div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)"></div><div style="height:8px;width:100%;background:#f0883e;opacity:1;border-radius:2px"></div></div><div style="font-size:10px;line-height:1.1;color:var(--white)">⚠️ +30k</div></div></div><div id="cot-chart" style="height:320px;margin-top:12px"></div></div></section>
+<section class="hero-signal bullish"><div class="hero-signal-top"><div class="hero-direction">BULLISH</div><div class="hero-strength">●●●○○ <span>3/5</span></div></div><div class="hero-factors"><span class="factor-tag bullish">▲ 央行資產負債表</span><span class="factor-tag bullish">▲ COT大戶持倉</span><span class="factor-tag bearish">▼ 技術面均線位置</span><span class="factor-tag neutral">— 干預偵測</span><span class="factor-tag neutral">— Werner信用框架</span></div><div class="hero-warning">52週定位：近一年當中有 96% 的時間比現在更空（代表大家目前偏看多日圓，位置不低）</div></section>
+<section class="cot-section"><div class="sec-header">🏦 大戶持倉 COT</div><div class="sec-body"><div class="cot-summary">報告日期 2026-03-17 ／ 淨多頭 30,099 口（+27,809） ／ 52週 P52</div><div id="cot-chart" class="chart-box"></div></div></section>
+
+<section>
+  <div class="sec-header">📰 本週重要事件</div>
+  <div class="sec-body"><div class="orange">1. USD/JPY 挑戰 160 心理關口與政府干預警戒：市場高度戒備日銀干預可能引發的空頭平倉潮，暫時限制日圓跌勢並轉向高位震盪。</div>
+<div class="green">2. 聯準會官員密集演說與美國週請失業金數據：美方鷹派立場持續強化利差擴大預期，支撐美元強勢並加深日圓貶值壓力。</div>
+<div>3. 中東地緣政治風險推升油價與避險需求：能源價格上漲加劇日本貿易逆差，避險資金流向美元導致日圓匯率持續承壓。</div></div>
+</section>
+<details class="details-panel"><summary>▶ 完整分析</summary><div class="details-content">
 <section>
   <div class="sec-header">🎯 本週判斷</div>
-  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span>聯準會擴大資產負債表的速度比日銀快，對日圓有利。</span></div>
-<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強，因為聯準會的動作增加美元供給。</span></div>
-<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span class="green">美國利率比日本高2.166%，通常意味著美元偏強，但這不能單獨用來決定匯率走勢。</span></div>
-<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">COT（大戶持倉報告）顯示市場正看漲日圓，但部位集中，需注意反轉風險。</span></div>
-<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>聯準會的講話及美國失業金數據會影響市場情緒，是近期變動的關鍵指標。</span></div></div>
+  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span>目前聯準會（美國中央銀行）印鈔速度快，但日銀（日本中央銀行）正在縮表，這對日圓偏有利。</span></div>
+<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強，因為央行操作顯示日圓長期有升值潛力。</span></div>
+<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國利率比日本高2.166%，這通常代表日圓可能疲弱，但這只是傳統看法，不能單獨用來判斷匯率。</span></div>
+<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">大戶部位（COT報告）目前看漲日圓，而且數量不少，市場在大量看多日圓，要小心是否籌碼過於集中。</span></div>
+<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>關注美日匯率接近160心理關口，可能引發政府干預，這會影響市場波動。</span></div></div>
 </section>
 <section>
   <div class="sec-header">📐 技術面區間</div>
-  <div class="sec-body"><div class='tech-table-wrap'><table class='tech-table'><tr><td class="mono red">159.79</td><td>20日高點</td></tr><tr class="current-row"><td class="mono blue">158.69</td><td>▶ 現價</td></tr><tr><td class="mono green">157.80</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.54</td><td>MA50 中期均線</td></tr><tr><td class="mono green">154.63</td><td>20日低點</td></tr></table></div></div>
+  <div class="sec-body"><div class='tech-table-wrap'><table class='tech-table'><tr><td class="mono red">159.79</td><td>20日高點</td></tr><tr class="current-row"><td class="mono blue">158.65</td><td>▶ 現價</td></tr><tr><td class="mono green">158.00</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.55</td><td>MA50 中期均線</td></tr><tr><td class="mono green">155.86</td><td>20日低點</td></tr></table></div></div>
 </section>
 <section>
   <div class="sec-header">🏛 央行訊號 &amp; 干預偵測</div>
   <div class="sec-body"><div>Fed 總資產：6,655,939 百萬美元（2026-03-18，較 2025-12-24 +1.14%）</div>
 <div>日銀總資產：6,837,705 百萬日圓（2026-02-01，較 2025-11-01 -2.03%）</div>
 <div class="green">方向：偏向日圓升值</div>
-<div class="green">解讀：聯準會近期擴表速度快於日銀，美元供給增加快於日圓，長期來看對日圓升值有利。</div><div style='margin-top:8px'><div>近三個月無財務省外匯干預紀錄（上次干預：2024年07月11日）</div>
-<div>解讀：市場目前未觸發財務省動作，日圓處於自然波動區間</div></div></div>
+<div class="green">解讀：聯準會近期擴表速度快於日銀，美元供給增加快於日圓，長期來看對日圓升值有利。</div><div class="section-split"></div><div>近三個月無財務省外匯干預紀錄（上次干預：2024年07月11日）</div>
+<div>解讀：市場目前未觸發財務省動作，日圓處於自然波動區間</div></div>
 </section>
 <section>
   <div class="sec-header">📡 Werner 信用框架</div>
-  <div class="sec-body"><div class="dim" style="font-size:13px;margin-bottom:10px;line-height:1.5">日本央行學者 Werner 理論：推動匯率的是信用數量，而非利率。以下三個指標追蹤信用擴張速度與資金流向。</div><div class='werner-list'><div class='werner-card'><div class='w-name'>信用乖離率 ∆MF <span class='dim small'>民間信用年增 vs 名目GDP年增</span></div><div class='w-val '>+0.4% → 信用增速與實體經濟相符</div></div><div class='werner-card'><div class='w-name'>長期資本外流 <span class='dim small'>日本金融帳（季資料）</span></div><div class='w-val '>172B USD 流出　YoY +16B，資金持續流出</div></div><div class='werner-card'><div class='w-name'>民間信用/GDP <span class='dim small'>民間信用 ÷ 名目GDP</span></div><div class='w-val '>113.7%（YoY +0.5 ppt）</div></div><div class='werner-card'><div class='w-name'>製成品進口 <span class='dim small'>日本進口季增率（OECD）</span></div><div class='w-val red'>製成品進口季增（最新）：-2.59%　製成品進口穩定（近4季累計 1.0%），結構性通縮壓力平穩</div></div></div></div>
+  <div class="sec-body"><div class="section-lead">日本央行學者 Werner 理論：推動匯率的是信用數量，而非利率。以下三個指標追蹤信用擴張速度與資金流向。</div><div class='werner-list'><div class='werner-card'><div class='w-name'>信用乖離率 ∆MF <span class='dim small'>民間信用年增 vs 名目GDP年增</span></div><div class='w-val '>+0.4% → 信用增速與實體經濟相符</div></div><div class='werner-card'><div class='w-name'>長期資本外流 <span class='dim small'>日本金融帳（季資料）</span></div><div class='w-val '>172B USD 流出　YoY +16B，資金持續流出</div></div><div class='werner-card'><div class='w-name'>民間信用/GDP <span class='dim small'>民間信用 ÷ 名目GDP</span></div><div class='w-val '>113.7%（YoY +0.5 ppt）</div></div><div class='werner-card'><div class='w-name'>製成品進口 <span class='dim small'>日本進口季增率（OECD）</span></div><div class='w-val red'>製成品進口季增（最新）：-2.59%　製成品進口穩定（近4季累計 1.0%），結構性通縮壓力平穩</div></div></div></div>
 </section>
 <section>
   <div class="sec-header">📊 訊號一致性</div>
@@ -144,10 +196,11 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
   <div class="sec-body"><div>03/24 🇺🇸 Flash Manufacturing PMI　預測：51.5　→ 若高於預測，利空日圓</div>
 <div>03/24 🇺🇸 Flash Services PMI　預測：52.0　→ 若高於預測，利空日圓</div>
 <div>03/26 🇺🇸 Unemployment Claims　預測：211K　→ 若低於預測（就業強），利空日圓</div></div>
-</section>
+</section></div></details>
+
 <section>
   <div class="sec-header">📈 策略回測</div>
-  <div class="sec-body"><div id="backtest-chart" style="height:350px;margin-top:12px"></div></div>
+  <div class="sec-body"><div id="backtest-chart" class="chart-box backtest"></div></div>
 </section>
 </div>
 <footer>本報告僅供個人參考，不構成投資建議</footer>
