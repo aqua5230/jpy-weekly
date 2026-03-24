@@ -68,14 +68,32 @@ header h1 { font-size: 22px; font-weight: 700; }
   font-size: 13px;
   line-height: 1.5;
 }
-section { margin: 0 0 4px; border-bottom: 1px solid var(--border); padding: 14px 0; }
-.cot-section { padding-top: 20px; }
+section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 0 0 12px;
+}
+.cot-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 0 0 12px;
+}
 .cot-summary {
   color: var(--white);
   font-size: 14px;
   margin-bottom: 12px;
 }
-.sec-header { font-size: 13px; color: var(--dim); margin-bottom: 10px; letter-spacing: .05em; }
+.sec-header {
+  font-size: 13px;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
 .sec-body { font-size: 14px; word-break: break-word; overflow-wrap: break-word; }
 .sec-body div { padding: 2px 0; }
 .green { color: var(--green); }
@@ -120,7 +138,7 @@ th { background: var(--surface); color: var(--dim); font-weight: 500; }
 }
 .details-panel summary::-webkit-details-marker { display: none; }
 .details-content { padding: 0 16px 10px; }
-.details-content section:last-child { border-bottom: none; }
+.details-content section:last-child { margin-bottom: 0; }
 .section-lead {
   font-size: 13px;
   color: var(--dim);
@@ -145,8 +163,8 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
   <div class="container">
     <h1>💴 日圓週報　2026年03月24日</h1>
     <div class="price-row">
-      <span class="price-big">USD/JPY 158.64</span>
-      <span class="price-change green">日圓升值 0.25（0.16%）</span>
+      <span class="price-big">USD/JPY 158.70</span>
+      <span class="price-change green">日圓升值 0.19（0.12%）</span>
     </div>
     
   </div>
@@ -160,7 +178,7 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
 <div class="green">2. 聯準會官員密集演說與美國週請失業金數據：美方鷹派立場持續強化利差擴大預期，支撐美元強勢並加深日圓貶值壓力。</div>
 <div>3. 中東地緣政治風險推升油價與避險需求：能源價格上漲加劇日本貿易逆差，避險資金流向美元導致日圓匯率持續承壓。</div></div>
 </section>
-<section class="cot-section"><div class="sec-header">🏦 大戶持倉 COT</div><div class="sec-body"><div class="cot-summary">報告日期 2026-03-17 ／ 淨多頭 30,099 口（+27,809） ／ 52週 P52</div><div id="cot-chart" class="chart-box"></div></div></section>
+<section class="cot-section"><div class="sec-header">🏦 大戶持倉 COT</div><div class="sec-body"><div class="cot-summary">報告日期 2026-03-17 ／ 淨多頭 30,099 口（+27,809） ／ 52週 P96</div><div id="cot-chart" class="chart-box"></div></div></section>
 
 <section>
   <div class="sec-header">📈 策略回測</div>
@@ -169,15 +187,15 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
 <details class="details-panel"><summary>▶ 完整分析</summary><div class="details-content">
 <section>
   <div class="sec-header">🎯 本週判斷</div>
-  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span class="green">美國聯準會最近印鈔速度比日本快，對日圓升值有利。</span></div>
-<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強，因為聯準會印鈔快過日銀，長期看日圓有升值潛力。</span></div>
-<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國利率比日本高2.166%，但這只是通常的看法，不能單靠這個來決定匯率走勢。</span></div>
-<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="orange">COT（期貨持倉報告）顯示大戶看多日圓，但注意部位過多，有擁擠風險。</span></div>
-<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>關注美元兌日圓接近160的心理關口，警惕政府可能的干預行動。</span></div></div>
+  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span class="green">聯準會印鈔速度（擴表）比日本央行更快，這有助於日圓升值。</span></div>
+<div class="verdict-block"><span class="verdict-label">【本週方向】</span><span class="green">日圓偏強。主要因為聯準會供應美元的速度快於日銀供應日圓，對日圓有利。</span></div>
+<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>目前美國利率比日本高2.166%。這通常代表美元有優勢，但利差不是匯率的唯一判斷依據。</span></div>
+<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="orange">COT（美國商品期貨委員會的大戶持倉報告）顯示大戶偏好做多日圓，部位有擁擠風險，要小心可能反轉。</span></div>
+<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>最重要的是日本央行是否會在美元兌日圓接近160時干預市場，這可能影響日圓走勢。</span></div></div>
 </section>
 <section>
   <div class="sec-header">📐 技術面區間</div>
-  <div class="sec-body"><div class='tech-table-wrap'><table class='tech-table'><tr><td class="mono red">159.79</td><td>20日高點</td></tr><tr class="current-row"><td class="mono blue">158.64</td><td>▶ 現價</td></tr><tr><td class="mono green">158.00</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.55</td><td>MA50 中期均線</td></tr><tr><td class="mono green">155.86</td><td>20日低點</td></tr></table></div></div>
+  <div class="sec-body"><div class='tech-table-wrap'><table class='tech-table'><tr><td class="mono red">159.79</td><td>20日高點</td></tr><tr class="current-row"><td class="mono blue">158.70</td><td>▶ 現價</td></tr><tr><td class="mono green">158.00</td><td>MA20 短期均線</td></tr><tr><td class="mono green">156.55</td><td>MA50 中期均線</td></tr><tr><td class="mono green">155.86</td><td>20日低點</td></tr></table></div></div>
 </section>
 <section>
   <div class="sec-header">🏛 央行訊號 &amp; 干預偵測</div>
