@@ -7,6 +7,8 @@ p3 = 信用品質（泡沫 vs 實體）
 p4 = 資本流 vs 經常帳（長期風險）
 """
 
+STRENGTH_VALUE = {"強": 2, "中": 1, "弱": 0.5}
+
 
 def decide_jpy_direction(p1, p2, p3, p4):
     """
@@ -103,21 +105,23 @@ def evaluate_jpy_direction(p1, p2, p3, p4):
     if p1["strength"] == "弱" and len(opposing) == 3:
         conclusion = "中性"
 
-    score = 1.0
-    if p1["strength"] == "強":
-        score += 1.0
-    elif p1["strength"] == "弱":
+    score = 0
+    score = STRENGTH_VALUE[p1["strength"]]
+
+    for name in ("P2", "P3", "P4"):
+        direction = inputs[name]["direction"]
+        strength_value = STRENGTH_VALUE[inputs[name]["strength"]]
+        if direction == p1_direction:
+            score += strength_value
+        elif direction != "中性":
+            score -= strength_value
+
+    if inputs["P4"]["direction"] != "中性" and inputs["P4"]["direction"] != p1_direction and inputs["P4"]["strength"] == "強":
         score -= 1.0
 
-    score += 0.5 * len(supporting)
-    score -= 0.5 * len(opposing)
-
-    if inputs["P4"]["direction"] != "中性" and inputs["P4"]["direction"] != p1_direction and inputs["P4"]["strength"] in ("強", "中"):
-        score -= 1.0
-
-    if score >= 2.5:
+    if score >= 2:
         confidence = "高"
-    elif score >= 1.0:
+    elif score >= 0:
         confidence = "中"
     else:
         confidence = "低"
