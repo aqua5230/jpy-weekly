@@ -23,7 +23,7 @@ from data_provider import (
 from test_image import draw_card
 from test_telegraph import create_telegraph_account, publish_to_telegraph, build_nodes
 from build_html_report import build_html, push_to_github_pages
-from decision_engine import decide_jpy_direction
+from decision_engine import decide_jpy_direction, evaluate_jpy_direction
 
 TG_TOKEN_FILE = os.path.expanduser("~/Desktop/投資/.telegraph_token")
 LOG_FILE = os.path.expanduser("~/Desktop/投資/.report.log")
@@ -1787,9 +1787,10 @@ def main():
     w_p2 = _w_parse_p2(mof_text)
     w_p3 = _w_parse_p3(boj_qe_text, lending_text)
     w_p4 = _w_parse_p4(bop_text)
-    w_result = decide_jpy_direction(w_p1, w_p2, w_p3, w_p4)
+    w_result = evaluate_jpy_direction(w_p1, w_p2, w_p3, w_p4)
     werner_block = (
         f"主導原則：{w_result['leader']}　最終方向：{w_result['direction']}　信心：{w_result['confidence']}\n"
+        f"支持：{'、'.join(w_result['supporting']) or '無'}　反對：{'、'.join(w_result['opposing']) or '無'}\n"
         f"P1 信用速度={w_p1['direction']}({w_p1['strength']})　"
         f"P2 干預={w_p2['direction']}({w_p2['strength']})　"
         f"P3 信用質={w_p3['direction']}({w_p3['strength']})　"
