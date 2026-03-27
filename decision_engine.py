@@ -70,3 +70,63 @@ def decide_jpy_direction(p1, p2, p3, p4):
         "confidence": confidence,
         "leader": leader,
     }
+
+
+def evaluate_jpy_direction(p1, p2, p3, p4):
+    """
+    主因驅動模型：
+    - 結論以 P1 為主
+    - P2~P4 僅作為支持/反對/中性標記
+    - 若 P1 強度弱且 P2~P4 全部反對，輸出中性
+    """
+    inputs = {
+        "P1": p1,
+        "P2": p2,
+        "P3": p3,
+        "P4": p4,
+    }
+
+    p1_direction = p1["direction"]
+    conclusion = p1_direction
+    supporting = []
+    opposing = []
+
+    for name in ("P2", "P3", "P4"):
+        direction = inputs[name]["direction"]
+        if direction == "中性":
+            continue
+        if direction == p1_direction:
+            supporting.append(name)
+        else:
+            opposing.append(name)
+
+    if p1["strength"] == "弱" and len(opposing) == 3:
+        conclusion = "中性"
+
+    score = 1.0
+    if p1["strength"] == "強":
+        score += 1.0
+    elif p1["strength"] == "弱":
+        score -= 1.0
+
+    score += 0.5 * len(supporting)
+    score -= 0.5 * len(opposing)
+
+    if inputs["P4"]["direction"] != "中性" and inputs["P4"]["direction"] != p1_direction and inputs["P4"]["strength"] in ("強", "中"):
+        score -= 1.0
+
+    if score >= 2.5:
+        confidence = "高"
+    elif score >= 1.0:
+        confidence = "中"
+    else:
+        confidence = "低"
+
+    return {
+        "direction": conclusion,
+        "confidence": confidence,
+        "leader": "P1",
+        "supporting": supporting,
+        "opposing": opposing,
+        "score": score,
+    }
