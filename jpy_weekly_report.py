@@ -7,13 +7,11 @@ import subprocess
 import logging
 from concurrent.futures import ThreadPoolExecutor
 import yfinance as yf
-import requests
 import json
 import re
 import os
 import html
 from datetime import datetime, timedelta
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 from config import TG_TOKEN, TG_PUBLIC, TG_VIP, TG_DEV, DANGER_HIGH, DANGER_MID
 from data_provider import (
     fetch_fred_points,
@@ -24,6 +22,7 @@ from test_image import draw_card
 from test_telegraph import create_telegraph_account, publish_to_telegraph, build_nodes
 from build_html_report import build_html, push_to_github_pages
 from decision_engine import decide_jpy_direction, evaluate_jpy_direction
+from utils import http_get, http_post, safe_last, safe_first, run_text_command, clean_gemini_output, extract_json_object, is_missing_result
 
 TG_TOKEN_FILE = os.path.expanduser("~/Desktop/投資/.telegraph_token")
 LOG_FILE = os.path.expanduser("~/Desktop/投資/.report.log")
@@ -48,54 +47,6 @@ def append_telegram_disclaimer(text, parse_mode=None):
     return f"{base_text}{TELEGRAM_DISCLAIMER}"
 
 
-@retry(
-    stop=stop_after_attempt(3),
-    wait=wait_exponential(multiplier=1, min=1, max=8),
-    retry=retry_if_exception_type(Exception),
-    reraise=True,
-)
-def http_get(url, **kwargs):
-    resp = requests.get(url, **kwargs)
-    resp.raise_for_status()
-    return resp
-
-
-@retry(
-    stop=stop_after_attempt(3),
-    wait=wait_exponential(multiplier=1, min=1, max=8),
-    retry=retry_if_exception_type(Exception),
-    reraise=True,
-)
-def http_post(url, **kwargs):
-    resp = requests.post(url, **kwargs)
-    resp.raise_for_status()
-    return resp
-
-
-def safe_last(series, label):
-    try:
-        if series is None:
-            raise ValueError(f"{label} 缺少序列")
-        cleaned = series.dropna()
-        if cleaned.empty:
-            raise ValueError(f"{label} 無有效資料")
-        return cleaned.iloc[-1]
-    except Exception as exc:
-        raise ValueError(f"{label} 讀取失敗: {exc}") from exc
-
-
-def safe_first(series, label):
-    try:
-        if series is None:
-            raise ValueError(f"{label} 缺少序列")
-        cleaned = series.dropna()
-        if cleaned.empty:
-            raise ValueError(f"{label} 無有效資料")
-        return cleaned.iloc[0]
-    except Exception as exc:
-        raise ValueError(f"{label} 讀取失敗: {exc}") from exc
-
-
 def send_emergency_telegram(context, exc):
     message = (
         "JPY 週報系統緊急告警\n"
@@ -111,18 +62,6 @@ def send_emergency_telegram(context, exc):
         )
     except Exception as notify_exc:
         logger.exception("緊急 TG 通知失敗: %s", notify_exc)
-
-
-def is_missing_result(result):
-    if result is None:
-        return True
-    if isinstance(result, str):
-        return not result.strip()
-    if isinstance(result, tuple):
-        return any(item is None for item in result)
-    if isinstance(result, dict):
-        return not bool(result)
-    return False
 
 
 def collect_data_source_result(name, future, failures, validator=None):
@@ -390,48 +329,6 @@ def get_usdjpy():
     current = safe_last(close, "USD/JPY Close")
     week_ago = safe_first(close, "USD/JPY Close")
     return current, current - week_ago
-
-
-def run_text_command(cmd, timeout, fallback_text=""):
-    try:
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-            check=True
-        )
-        output = result.stdout.strip()
-        if output:
-            return output
-        logger.warning("文字模型輸出為空，改用備用文字: %s", cmd[0] if cmd else "unknown")
-    except subprocess.TimeoutExpired as exc:
-        logger.exception("文字模型執行逾時: %s", exc)
-    except subprocess.CalledProcessError as exc:
-        logger.exception("文字模型執行失敗: %s stderr=%s", exc, (exc.stderr or "").strip())
-    except FileNotFoundError as exc:
-        logger.exception("文字模型指令不存在: %s", exc)
-    except Exception as exc:
-        logger.exception("文字模型執行異常: %s", exc)
-    return fallback_text
-
-
-def clean_gemini_output(text):
-    lines = text.split('\n')
-    skip = ['我將', '我会', '讓我', '首先，我', '我需要', '我會先', 'I will', 'I am', 'Let me',
-            '日期', 'Date', '─', '—']
-    return '\n'.join(
-        line for line in lines
-        if not any(line.strip().startswith(p) for p in skip)
-        and '---' not in line
-    ).strip()
-
-
-def extract_json_object(text):
-    match = re.search(r'\{.*\}', text, re.DOTALL)
-    if not match:
-        raise ValueError(f"找不到 JSON 物件: {text}")
-    return json.loads(match.group(0))
 
 
 def load_cot_history():
