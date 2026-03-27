@@ -33,3 +33,11 @@ ALERT_LEVELS = {
 DANGER_HIGH  = ALERT_LEVELS["停損警告"]   # 162
 DANGER_MID   = ALERT_LEVELS["干預紅線"]   # 160
 DANGER_WARN  = ALERT_LEVELS["加碼訊號"]   # 156
+
+# ── 路徑 ──────────────────────────────────────
+TG_TOKEN_FILE    = BASE_DIR / ".telegraph_token"
+LOG_FILE         = BASE_DIR / ".report.log"
+COT_HISTORY      = BASE_DIR / ".cot_history.json"
+BOJ_QE_CACHE     = BASE_DIR / ".boj_qe_cache.json"
+CALENDAR_CACHE   = BASE_DIR / ".calendar_cache.json"
+REPORT_CARD      = BASE_DIR / ".report_card.png"

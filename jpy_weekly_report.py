@@ -12,7 +12,20 @@ import re
 import os
 import html
 from datetime import datetime, timedelta
-from config import TG_TOKEN, TG_PUBLIC, TG_VIP, TG_DEV, DANGER_HIGH, DANGER_MID
+from config import (
+    TG_TOKEN,
+    TG_PUBLIC,
+    TG_VIP,
+    TG_DEV,
+    DANGER_HIGH,
+    DANGER_MID,
+    TG_TOKEN_FILE,
+    LOG_FILE,
+    COT_HISTORY,
+    BOJ_QE_CACHE,
+    CALENDAR_CACHE,
+    REPORT_CARD,
+)
 from data_provider import (
     fetch_fred_points,
     fetch_latest_jgb_curve_row,
@@ -23,13 +36,6 @@ from test_telegraph import create_telegraph_account, publish_to_telegraph, build
 from build_html_report import build_html, push_to_github_pages
 from decision_engine import decide_jpy_direction, evaluate_jpy_direction
 from utils import http_get, http_post, safe_last, safe_first, run_text_command, clean_gemini_output, extract_json_object, is_missing_result
-
-TG_TOKEN_FILE = os.path.expanduser("~/Desktop/投資/.telegraph_token")
-LOG_FILE = os.path.expanduser("~/Desktop/投資/.report.log")
-
-# ── COT 歷史檔 ──────────────────────────────────
-COT_HISTORY = os.path.expanduser("~/Desktop/投資/.cot_history.json")
-BOJ_QE_CACHE = os.path.expanduser("~/Desktop/投資/.boj_qe_cache.json")
 
 logging.basicConfig(
     filename=LOG_FILE,
@@ -658,7 +664,7 @@ def get_news_from_gemini():
 
 def get_economic_calendar():
     """從 ForexFactory JSON 抓本週 JPY + USD 重要事件（有真實日期）"""
-    cache_path = os.path.expanduser("~/Desktop/投資/.calendar_cache.json")
+    cache_path = CALENDAR_CACHE
     today = datetime.now().strftime("%Y-%m-%d")
     try:
         if os.path.exists(cache_path):
@@ -1746,7 +1752,7 @@ def main():
 
         # 生成圖片
         img = draw_card(card_data)
-        img_path = os.path.expanduser(f"~/Desktop/投資/.report_card.png")
+        img_path = REPORT_CARD
         img.save(img_path, quality=95)
 
         # 保留 GitHub Pages 產出，不影響既有報告流程
