@@ -246,18 +246,14 @@ def get_cot_with_history():
 
     recent = history[-8:]
     if recent:
-        SPARKS = "▁▂▃▄▅▆▇█"
-        vals = [item["net_short"] for item in recent]
-        min_v, max_v = min(vals), max(vals)
-        if max_v == min_v:
-            spark = "▄" * len(vals)
+        bullish_weeks = sum(1 for item in recent if item["net_short"] > 0)
+        if bullish_weeks >= 6:
+            trend_label = "多頭趨勢"
+        elif bullish_weeks >= 3:
+            trend_label = "震盪"
         else:
-            indices = [int((v - min_v) / (max_v - min_v) * 7) for v in vals]
-            spark = "".join(SPARKS[idx] for idx in indices)
-
-        latest_val = history[-1]["net_short"]
-        direction_label = "多頭" if latest_val > 0 else "空頭"
-        analysis += f"\n近8週趨勢：{spark}  本週 {direction_label} {abs(latest_val):,} 口"
+            trend_label = "空頭趨勢"
+        analysis += f"\n近8週：{bullish_weeks}週看多 → {trend_label}"
 
     if percentile >= 80 or percentile < 20:
         analysis += "\n⚠️ 注意：目前持倉過度集中在同一邊，歷史上這種情況常出現在行情反轉前"

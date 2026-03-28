@@ -1,66 +1,51 @@
 ## 任務目標
-在 backtest_v1.py 新增 R6：持有型回測（Holding Backtest）函式。
-不改原有任何函式，只新增。
+修改 data_fetcher.py 中「近8週趨勢」的顯示格式。
+不改其他邏輯，只改這一段輸出文字。
 
-## 規格
+## 目前程式碼位置
+data_fetcher.py，get_cot_with_history 函式內，近第 249–260 行：
 
-新增函式 `holding_backtest(records: list) -> dict`，加在 backtest_v1.py 最底部。
+```python
+recent = history[-8:]
+if recent:
+    SPARKS = "▁▂▃▄▅▆▇█"
+    vals = [item["net_short"] for item in recent]
+    min_v, max_v = min(vals), max(vals)
+    if max_v == min_v:
+        spark = "▄" * len(vals)
+    else:
+        indices = [int((v - min_v) / (max_v - min_v) * 7) for v in vals]
+        spark = "".join(SPARKS[idx] for idx in indices)
 
-入參：
-- records：list of dict，從 load_prediction_log 讀出來的記錄，已按 date 排序
-  每筆有：date, position_score, close_price
+    latest_val = history[-1]["net_short"]
+    direction_label = "多頭" if latest_val > 0 else "空頭"
+    analysis += f"\n近8週趨勢：{spark}  本週 {direction_label} {abs(latest_val):,} 口"
+```
 
-邏輯（按照 date 順序逐筆執行）：
-- position = 0（無持倉）
-- entry_price = None
-- trades = []
+## 要求
+將上面這段改為：
 
-for 每筆 record：
-  score = record["position_score"]
-  price = record["close_price"]
-
-  if score == 1 and position == 0:
-      position = 1
-      entry_price = price
-
-  elif position == 1 and score < 0:
-      ret = (entry_price - price) / entry_price  # 日圓升值 = USD/JPY 下跌
-      trades.append({"entry": entry_price, "exit": price, "return": ret, "correct": ret > 0})
-      position = 0
-      entry_price = None
-
-  # score == 0 且已有持倉 → 繼續持有（不動）
-  # score == 1 且已有持倉 → 繼續持有（不動）
-
-回傳 dict：
-{
-  "trades": trades,           # list of {entry, exit, return, correct}
-  "total": len(trades),
-  "win_rate": 勝率（float，0.0 若無交易）,
-  "avg_return": 平均報酬（float，0.0 若無交易）,
-}
+```python
+recent = history[-8:]
+if recent:
+    bullish_weeks = sum(1 for item in recent if item["net_short"] > 0)
+    if bullish_weeks >= 6:
+        trend_label = "多頭趨勢"
+    elif bullish_weeks >= 3:
+        trend_label = "震盪"
+    else:
+        trend_label = "空頭趨勢"
+    analysis += f"\n近8週：{bullish_weeks}週看多 → {trend_label}"
+```
 
 ## 禁止
-- 不改 log_prediction / resolve_pending_predictions / load_prediction_log
-- 不接 API
+- 不改其他函式
+- 不改 report_builder.py
 - 不改 decision_engine.py
-- 不新增新檔案
+- 不動 SPARKS 相關任何其他使用（只改 get_cot_with_history 這一段）
 
 ## 驗收條件
-python3 -c "
-from backtest_v1 import holding_backtest
-records = [
-  {'date': '2026-01-01', 'position_score': 1,    'close_price': 150.0},
-  {'date': '2026-01-08', 'position_score': 1,    'close_price': 149.0},
-  {'date': '2026-01-15', 'position_score': 0,    'close_price': 148.5},
-  {'date': '2026-01-22', 'position_score': -0.5, 'close_price': 151.0},
-  {'date': '2026-01-29', 'position_score': 1,    'close_price': 149.5},
-  {'date': '2026-02-05', 'position_score': -0.5, 'close_price': 147.0},
-]
-r = holding_backtest(records)
-assert r['total'] == 2, f'expected 2 trades, got {r[\"total\"]}'
-print('PASS', r)
-"
+python3 -m py_compile data_fetcher.py 通過
 
 ## Codex 結果
 狀態：完成
