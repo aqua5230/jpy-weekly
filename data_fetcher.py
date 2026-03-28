@@ -9,7 +9,16 @@ from datetime import datetime, timedelta
 
 import yfinance as yf
 
-from config import BOJ_QE_CACHE, CALENDAR_CACHE, COT_HISTORY
+from config import (
+    BOJ_QE_CACHE,
+    CALENDAR_CACHE,
+    COT_HISTORY,
+    FRED_BOP_CACHE,
+    FRED_CB_CACHE,
+    FRED_FISCAL_CACHE,
+    FRED_LENDING_CACHE,
+    FRED_MFG_CACHE,
+)
 from data_provider import fetch_fred_points, fetch_latest_jgb_curve_row, fetch_yfinance_history
 from utils import (
     clean_gemini_output,
@@ -17,9 +26,11 @@ from utils import (
     http_get,
     http_post,
     is_missing_result,
+    load_text_cache,
     run_text_command,
     safe_first,
     safe_last,
+    save_text_cache,
 )
 
 logger = logging.getLogger(__name__)
@@ -616,7 +627,7 @@ def get_cb_balance_sheets():
             direction = "方向不明"
             detail = "Fed 和日銀近 3 個月擴縮幅度相近，單看這個指標還無法判斷方向，需參考其他訊號。"
 
-        return (
+        result = (
             f"Fed 總資產：{fed_latest:,.0f} 百萬美元（{fed_latest_date:%Y-%m-%d}，較 {fed_anchor_date:%Y-%m-%d} "
             f"{fed_change:+.2f}%）\n"
             f"日銀總資產：{boj_latest:,.0f} 百萬日圓（{boj_latest_date:%Y-%m-%d}，較 {boj_anchor_date:%Y-%m-%d} "
@@ -624,8 +635,13 @@ def get_cb_balance_sheets():
             f"方向：{direction}\n"
             f"解讀：{detail}"
         )
+        save_text_cache(FRED_CB_CACHE, result)
+        return result
     except Exception as exc:
         logger.exception("央行資產負債表抓取失敗: %s", exc)
+        cached = load_text_cache(FRED_CB_CACHE)
+        if cached:
+            return cached + "\n⚠️ [fallback_used=True] 本段資料來自上次快取，非即時數據"
         return None
 
 
@@ -843,15 +859,20 @@ def get_japan_bank_lending():
         else:
             diff_interpretation = "信用增速與實體經濟相符"
 
-        return (
+        result = (
             f"民間信用年增：{credit_yoy:+.1f}%（BIS，{credit_label}）\n"
             f"名目 GDP 年增：{gdp_yoy:+.1f}%（{gdp_label}）\n"
             f"解讀：{interpretation}\n"
             f"信用乖離率 ∆MF：{diff:+.1f}% → 解讀 {diff_interpretation}"
         )
+        save_text_cache(FRED_LENDING_CACHE, result)
+        return result
 
     except Exception as exc:
         logger.exception("日本信用資料抓取失敗: %s", exc)
+        cached = load_text_cache(FRED_LENDING_CACHE)
+        if cached:
+            return cached + "\n⚠️ [fallback_used=True] 本段資料來自上次快取，非即時數據"
         return None
 
 
@@ -878,13 +899,18 @@ def get_bop_analysis():
         else:
             interpretation = "金融帳資料不足"
 
-        return (
+        result = (
             f"金融帳近4季：{capital_flow_4q/1e9:.0f}B USD（正＝流出）\n"
             f"經常帳：{ca_pct:.1f}% of GDP\n"
             f"解讀：{interpretation}"
         )
+        save_text_cache(FRED_BOP_CACHE, result)
+        return result
     except Exception as exc:
         logger.exception("國際收支資料抓取失敗: %s", exc)
+        cached = load_text_cache(FRED_BOP_CACHE)
+        if cached:
+            return cached + "\n⚠️ [fallback_used=True] 本段資料來自上次快取，非即時數據"
         return None
 
 
@@ -908,12 +934,17 @@ def get_fiscal_financing():
         else:
             interpretation = f"信用/GDP 比率穩定，{yoy_delta:+.1f} ppt YoY"
 
-        return (
+        result = (
             f"民間信用/GDP：{credit_to_gdp:.1f}%（YoY {yoy_delta:+.1f} ppt）\n"
             f"解讀：{interpretation}"
         )
+        save_text_cache(FRED_FISCAL_CACHE, result)
+        return result
     except Exception as exc:
         logger.exception("財政融資資料抓取失敗: %s", exc)
+        cached = load_text_cache(FRED_FISCAL_CACHE)
+        if cached:
+            return cached + "\n⚠️ [fallback_used=True] 本段資料來自上次快取，非即時數據"
         return None
 
 
@@ -930,13 +961,18 @@ def get_manufactured_imports():
         else:
             interpretation = f"製成品進口穩定（近4季累計 {sum_4q:.1f}%），結構性通縮壓力平穩"
 
-        return (
+        result = (
             f"製成品進口季增（最新）：{latest_val:+.2f}%\n"
             f"近4季累計：{sum_4q:.1f}%\n"
             f"解讀：{interpretation}"
         )
+        save_text_cache(FRED_MFG_CACHE, result)
+        return result
     except Exception as exc:
         logger.exception("製成品進口資料抓取失敗: %s", exc)
+        cached = load_text_cache(FRED_MFG_CACHE)
+        if cached:
+            return cached + "\n⚠️ [fallback_used=True] 本段資料來自上次快取，非即時數據"
         return None
 
 
