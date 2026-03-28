@@ -175,6 +175,7 @@ def fetch_fred_series(series_id: str, value_name: str) -> pd.Series:
             try:
                 series = _parse_fred_df(cache_path.read_text(encoding="utf-8"), series_id, value_name)
                 if not series.empty:
+                    series.attrs["fallback_used"] = True
                     return series
             except Exception:
                 pass

@@ -110,3 +110,24 @@ def is_missing_result(result):
     if isinstance(result, dict):
         return not bool(result)
     return False
+
+
+def load_text_cache(path) -> "str | None":
+    """讀取文字快取，失敗回傳 None"""
+    try:
+        import json
+        with open(path, encoding="utf-8") as f:
+            return json.load(f).get("text")
+    except Exception:
+        return None
+
+
+def save_text_cache(path, text: str) -> None:
+    """寫入文字快取，失敗靜默忽略"""
+    try:
+        import json
+        from datetime import datetime
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump({"text": text, "saved_at": datetime.now().isoformat()}, f, ensure_ascii=False)
+    except Exception:
+        pass
