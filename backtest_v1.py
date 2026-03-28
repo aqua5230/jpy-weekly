@@ -130,3 +130,40 @@ if __name__ == '__main__':
     for score_val in sorted(stats["avg_return_by_score"].keys()):
         avg_ret = stats["avg_return_by_score"][score_val]
         print(f'  score={score_val:+g}: {avg_ret*100:+.2f}%')
+
+
+import json
+import os
+
+def log_prediction(date, werner_direction, position_score, close_price, log_path):
+    """每次週報跑完後記錄當下預測，不填未來欄位。"""
+    # 讀取現有記錄
+    records = []
+    if os.path.exists(log_path):
+        try:
+            with open(log_path, encoding='utf-8') as f:
+                records = json.load(f)
+        except Exception:
+            records = []
+
+    # 若同一天已有記錄，不重複 append
+    existing_dates = {r['date'] for r in records}
+    if date in existing_dates:
+        return False  # 已存在，不寫入
+
+    # append 新記錄
+    records.append({
+        'date': date,
+        'werner_direction': werner_direction,
+        'position_score': position_score,
+        'close_price': close_price,
+        'next_close_price': None,
+        'next_week_return': None,
+        'correct': None,
+        'status': 'pending',
+    })
+
+    # 寫回
+    with open(log_path, 'w', encoding='utf-8') as f:
+        json.dump(records, f, ensure_ascii=False, indent=2)
+    return True  # 成功寫入
