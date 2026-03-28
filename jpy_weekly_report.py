@@ -363,10 +363,10 @@ def main():
     _all = load_prediction_log(str(PREDICTION_LOG))
     _resolved = [r for r in _all if r.get('status') == 'resolved']
     _valid = [r for r in _resolved if r.get('position_score') != 0]
-    _win = sum(1 for r in _valid if r.get('correct') is True)
+    _win = sum(1 for r in _valid if r.get('correct_1w') is True)
     _win_rate = _win / len(_valid) if _valid else None
-    _s1 = [r['next_week_return'] for r in _resolved if r.get('position_score') == 1 and r.get('next_week_return') is not None]
-    _sm = [r['next_week_return'] for r in _resolved if r.get('position_score') == -0.5 and r.get('next_week_return') is not None]
+    _s1 = [r['return_1w'] for r in _resolved if r.get('position_score') == 1 and r.get('return_1w') is not None]
+    _sm = [r['return_1w'] for r in _resolved if r.get('position_score') == -0.5 and r.get('return_1w') is not None]
     print('── 回測統計 ──────────────────────────')
     print(f'已結算：{len(_resolved)} 筆　勝率：{f"{_win_rate:.1%}" if _win_rate is not None else "N/A"}')
     print(f'score=+1 平均報酬：{f"{sum(_s1)/len(_s1)*100:+.2f}%" if _s1 else "N/A"}')
