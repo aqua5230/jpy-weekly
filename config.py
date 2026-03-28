@@ -46,3 +46,4 @@ FRED_LENDING_CACHE = BASE_DIR / ".fred_text_cache_lending.json"
 FRED_BOP_CACHE     = BASE_DIR / ".fred_text_cache_bop.json"
 FRED_FISCAL_CACHE  = BASE_DIR / ".fred_text_cache_fiscal.json"
 FRED_MFG_CACHE     = BASE_DIR / ".fred_text_cache_mfg.json"
+PREDICTION_LOG     = BASE_DIR / 'backtest_predictions.json'

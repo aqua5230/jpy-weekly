@@ -14,6 +14,7 @@ from config import (
     TG_TOKEN_FILE,
     LOG_FILE,
     REPORT_CARD,
+    PREDICTION_LOG,
 )
 from data_fetcher import (
     collect_data_source_result,
@@ -39,6 +40,7 @@ from report_builder import (
 )
 from signal_analyzer import get_weekly_verdict
 from telegram_sender import TELEGRAM_DISCLAIMER, append_telegram_disclaimer, send_emergency_telegram, split_telegram_text, build_direction_summary, send_photo_to_chat, send_public_report, send_vip_report
+from backtest_v1 import log_prediction
 
 logging.basicConfig(
     filename=LOG_FILE,
@@ -338,6 +340,14 @@ def main():
     output_path = os.path.expanduser(f"~/Desktop/投資/日圓週報_{datetime.now().strftime('%Y%m%d')}.txt")
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(report)
+
+    log_prediction(
+        date=now.strftime('%Y-%m-%d'),
+        werner_direction=w_result['direction'],
+        position_score=position_score,
+        close_price=round(float(usdjpy), 2),
+        log_path=str(PREDICTION_LOG),
+    )
 
     logger.info("報告內容如下\n%s", report)
     logger.info("報告已存到：%s", output_path)
