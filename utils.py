@@ -84,6 +84,13 @@ def run_text_command(cmd, timeout, fallback_text=""):
 
 def clean_gemini_output(text):
     lines = text.split('\n')
+    whitelist = [
+        line for line in lines
+        if not line.strip() or re.match(r'^\d+\.', line.strip())
+    ]
+    result = '\n'.join(whitelist).strip()
+    if result:
+        return result
     skip = ['我將', '我会', '讓我', '首先，我', '我需要', '我會先', 'I will', 'I am', 'Let me',
             '日期', 'Date', '─', '—']
     return '\n'.join(
