@@ -153,10 +153,11 @@ def build_full_report(now, usdjpy, direction, change, pct, danger_zone,
                       cb_text=None, mof_text=None, lending_text=None,
                       boj_qe_text=None, eurjpy_text=None, signal_summary=None,
                       bop_text=None, fiscal_text=None, mfg_import_text=None,
-                      werner_block=None):
+                      werner_block=None, divergence_note=None):
     """純文字版，存檔用"""
+    divergence_line = f"\n{divergence_note}" if divergence_note else ""
     werner_section = (
-        f"\n━━ Werner 四原則方向判斷 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n{werner_block}\n"
+        f"\n━━ 結構判斷（Werner 四原則）━━━━━━━━━━━━━━━━━━━━━━━━\n\n【結構判斷（Werner）】\n{werner_block}{divergence_line}\n"
         if werner_block else ""
     )
     eurjpy_line = f"EUR/JPY 確認　{eurjpy_text}\n" if eurjpy_text else ""
@@ -203,8 +204,9 @@ USD/JPY　{usdjpy:.2f}　　本週日圓{direction} {abs(change):.2f}（{pct:.2f
 
 {levels_annotated}
 
-━━ 本週數據指向 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━ 短線觀察（技術 / COT）━━━━━━━━━━━━━━━━━━━━━━━━━
 
+【短線觀察（技術 / COT）】
 {verdict}
 {werner_section}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

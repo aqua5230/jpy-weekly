@@ -297,12 +297,30 @@ def main():
     logger.info("產生本週判斷中")
     verdict = get_weekly_verdict(usdjpy, change, cot, news, us10y, jp10y, spread, rsi, rsi_signal, cb_text, mof_text, lending_text, boj_qe_text, signal_summary, bop_text=bop_text, fiscal_text=fiscal_text, mfg_import_text=mfg_import_text)
 
+    # ── R2：分歧偵測 ────────────────────────────────────
+    def _parse_signal_direction(text):
+        """從 signal_analyzer 的 verdict 文字中，提取方向傾向"""
+        t = str(text or "")
+        if any(k in t for k in ["偏向日圓升值", "偏強", "升值空間", "走升"]):
+            return "升"
+        if any(k in t for k in ["偏向日圓貶值", "偏弱", "貶值壓力", "走貶"]):
+            return "貶"
+        return "中性"
+
+    signal_dir = _parse_signal_direction(verdict)
+    werner_dir = w_result["direction"]
+    divergence_note = (
+        "→ 結構與短線分歧"
+        if signal_dir != "中性" and werner_dir != "中性" and signal_dir != werner_dir
+        else ""
+    )
+
     # 存純文字檔
     report = build_full_report(now, usdjpy, direction, change, pct, danger_zone,
                                cot, news, calendar, levels_plain, levels_annotated, verdict,
                                us10y, jp10y, spread, spread_trend, rsi, rsi_signal, cb_text, mof_text, lending_text,
                                boj_qe_text, eurjpy_text, signal_summary, bop_text=bop_text, fiscal_text=fiscal_text, mfg_import_text=mfg_import_text,
-                               werner_block=werner_block)
+                               werner_block=werner_block, divergence_note=divergence_note)
     output_path = os.path.expanduser(f"~/Desktop/投資/日圓週報_{datetime.now().strftime('%Y%m%d')}.txt")
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(report)
