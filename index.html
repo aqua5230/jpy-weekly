@@ -296,9 +296,11 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
 
 <section>
   <div class="sec-header">📰 本週重要事件</div>
-  <div class="sec-body"><div class="red">1. 美元兌日圓突破 160 心理關口：匯價一度衝上 160.25 新高，引發日本財務省發出「採取大膽行動」的強力干預警告，導致市場情緒極度緊繃且日圓趨向極端貶值。</div>
-<div class="red">2. 中東衝突推升避險情緒與油價：油價逼近每桶 100 美元加重日本貿易逆差壓力，避險資金大舉湧入美元，導致日圓承壓持續走弱。</div>
-<div>3. 日銀發布新通膨指標引發升息預期：2 年期日債收益率刷新 30 年高位，市場強烈押注 4 月升息，令日圓於高位呈現劇烈的雙向震盪波動。</div></div>
+  <div class="sec-body"><div>文件似乎被忽略了。我將檢查 `.gitignore` 並嘗試透過其他方式讀取文件，以獲取所需的市場觀察資訊。</div>
+<div>由於 `日圓週報_*.txt` 被列入忽略名單，我將直接透過指令讀取該文件的內容。</div>
+<div class="red">1. 美元兌日圓突破 160 心理關口：匯價衝擊 160.25 引發日本財務省發出強力干預警告，市場情緒極度緊繃且日圓趨向極端貶值。</div>
+<div class="red">2. 中東衝突推升避險情緒與油價：油價逼近每桶 100 美元加重日本貿易逆差壓力，避險資金大舉湧入美元導致日圓持續承壓走弱。</div>
+<div>3. 日銀發布新通膨指標引發升息預期：2 年期日債收益率刷新 30 年高位令市場強烈押注 4 月升息，日圓於高位呈現劇烈的雙向震盪。</div></div>
 </section>
 <section class="info-bar"><div class="info-bar-body"><div class="info-bar-line"><span class="info-bar-icon">🏦</span><span>美國2Y 3.61%　日本2Y 1.35%　利差 2.26%（短端）</span></div><div class="info-bar-line"><span class="info-bar-icon">📅</span><span>Fed 下次會議 2026-05-06/07（39天後）　BOJ 2026-04-30/05-01（33天後）</span></div></div></section>
 <section class="cot-section"><div class="sec-header">🏦 大戶持倉 COT</div><div class="sec-body"><div class="cot-summary">報告日期 2026-03-24 ／ 淨多頭 17,281 口（+15,296） ／ P77</div><div id="cot-chart" class="chart-box"></div></div></section>
@@ -325,12 +327,12 @@ footer { color: var(--dim); font-size: 11px; text-align: center; padding: 20px 1
 <details class="details-panel"><summary>▶ 完整分析</summary><div class="details-content">
 <section>
   <div class="sec-header">🎯 本週判斷</div>
-  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【數據觀察摘要】</span><span class="red">本週日圓整體偏弱<br>理由：市場日圓賣壓較強，但注意 COT（美國商品期貨委員會的大戶持倉報告）擁擠風險<br>風險：⚠️ 本段為公開數據整理，僅供風險辨識參考<br>摘要邏輯：根據本週各項指標數值與現象整理重點，允許延伸成日圓偏弱的方向判斷，但不能延伸成具體交易建議</span></div>
-<div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span class="green">美國聯準會不變動資產購買，日本央行縮表（減少資產購買），引發日圓升值壓力。</span></div>
-<div class="verdict-block"><span class="verdict-label">【本週指標整理】</span><span class="red">美元兌日圓突破160心理關口，技術面顯示日圓短線仍偏弱，但有支持因素。</span></div>
-<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span>美國利率比日本高2.154%，這通常讓資金流向美元，但不能單獨決定匯率走勢。</span></div>
-<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">COT報告顯示大戶對日圓的多頭（買方）部位增加，反映市場對日圓有支撐，但需注意擁擠風險。</span></div>
-<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span class="red">日本財務省釋出干預警告，可能限制日圓短期的貶值壓力，市場情緒緊繃。</span></div></div>
+  <div class="sec-body"><div class="verdict-block"><span class="verdict-label">【數據觀察摘要】</span><span class="red">本週日圓走勢偏弱。<br>理由：利率差距與市場避險情緒都對日圓不利。<br>風險：⚠️ 本段為公開數據整理，僅供風險辨識參考<br>摘要邏輯：根據本週利率差異、中東局勢影響及日銀政策，日圓偏向貶值壓力。</span></div>
+<div class="verdict-block"><span class="verdict-label">【央行在做什麼】</span><span class="green">日本央行正在縮減資產負債表，減少購買國債；而美國聯準會資產變動不大，市場預期日圓可能有升值壓力。</span></div>
+<div class="verdict-block"><span class="verdict-label">【本週指標整理】</span><span class="green">美元兌日圓接近160，顯示日圓持續貶值壓力；技術指標RSI（技術指標，衡量超買超賣）顯示略偏強，但未過熱，市場情況複雜。</span></div>
+<div class="verdict-block"><span class="verdict-label">【利率差距說什麼】</span><span class="red">美國利率比日本高2.154%，一般暗示日圓可能貶值，但這只是常見看法，不能單獨判斷匯率。</span></div>
+<div class="verdict-block"><span class="verdict-label">【大戶在做什麼】</span><span class="green">COT（美國商品期貨委員會的大戶持倉報告）顯示大戶看多日圓，持倉增加，這可能對日圓有支撐，但目前無擁擠風險。</span></div>
+<div class="verdict-block"><span class="verdict-label">【這週要盯什麼】</span><span>美元兌日圓是否突破160關口，這可能引發市場更大波動，日本財務省的干預行動需特別注意。</span></div></div>
 </section>
 <section>
   <div class="sec-header">🏛 央行訊號 &amp; 干預偵測</div>
