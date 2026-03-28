@@ -13,7 +13,7 @@ TELEGRAM_DISCLAIMER = "\n\n⚠️ 本報告僅供參考，非投資建議。"
 def append_telegram_disclaimer(text, parse_mode=None):
     base_text = str(text or "").rstrip()
     if parse_mode == "HTML":
-        return f"{base_text}<br><br>⚠️ 本報告僅供參考，非投資建議。"
+        return f"{base_text}\n\n⚠️ 本報告僅供參考，非投資建議。"
     return f"{base_text}{TELEGRAM_DISCLAIMER}"
 
 
