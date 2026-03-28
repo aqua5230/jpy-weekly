@@ -15,6 +15,7 @@ from config import (
     LOG_FILE,
     REPORT_CARD,
     PREDICTION_LOG,
+    TG_VIP,
 )
 from data_fetcher import (
     collect_data_source_result,
@@ -352,7 +353,7 @@ def main():
         f.write(report)
 
     log_prediction(
-        date=now.strftime('%Y-%m-%d'),
+        date_str=datetime.now().strftime('%Y-%m-%d'),
         werner_direction=w_result['direction'],
         position_score=position_score,
         close_price=round(float(usdjpy), 2),
