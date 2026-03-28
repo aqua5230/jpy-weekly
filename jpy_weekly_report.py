@@ -40,7 +40,7 @@ from report_builder import (
 )
 from signal_analyzer import get_weekly_verdict
 from telegram_sender import TELEGRAM_DISCLAIMER, append_telegram_disclaimer, send_emergency_telegram, split_telegram_text, build_direction_summary, send_photo_to_chat, send_public_report, send_vip_report
-from backtest_v1 import log_prediction
+from backtest_v1 import log_prediction, load_prediction_log, save_prediction_log, resolve_pending_predictions
 
 logging.basicConfig(
     filename=LOG_FILE,
@@ -85,6 +85,16 @@ def main():
     direction = "升值" if change < 0 else "貶值"
     pct = abs(change) / usdjpy * 100
     now = datetime.now().strftime("%Y年%m月%d日")
+
+    # ── R5.5 自動結算舊預測 ──────────────────────────────────
+    today_str = datetime.now().strftime('%Y-%m-%d')
+    _pred_records = load_prediction_log(str(PREDICTION_LOG))
+    _price_lookup = {today_str: round(float(usdjpy), 2)}
+    _pred_records, _resolved, _pending = resolve_pending_predictions(_pred_records, _price_lookup)
+    if _resolved > 0:
+        save_prediction_log(str(PREDICTION_LOG), _pred_records)
+        logger.info('自動結算 %d 筆預測，仍有 %d 筆 pending', _resolved, _pending)
+    # ─────────────────────────────────────────────────
 
     if usdjpy >= DANGER_HIGH:
         danger_zone = f"目前位置已突破 {DANGER_HIGH} 停損警戒線，需重新評估部位。"
