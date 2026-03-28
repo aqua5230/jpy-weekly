@@ -5,26 +5,58 @@
 ## 專案目標
 日圓週報自動化系統 + Werner 四原則判斷引擎
 
-## 已完成
-- `jpy_weekly_report.py`：週報主流程（1884行）
+## 已完成模組
+- `jpy_weekly_report.py`：週報主流程（381行）
 - `decision_engine.py`：Werner 四原則判斷引擎
   - `decide_jpy_direction()`：舊投票制（保留）
   - `evaluate_jpy_direction()`：新 hierarchical model（主力）
-- `data_provider.py`：FRED / yfinance 資料抓取
+- `data_provider.py`：FRED / yfinance 資料抓取（含 fallback_used 標記）
+- `data_fetcher.py`：20 個資料抓取函式（含 D1 FRED 三層 fallback）
 - `build_html_report.py`：HTML 報告 + GitHub Pages 推送
-- Git repo 初始化（2 commits）
-- 重構前分析完成（Refactor Plan 已產出）
+- `telegram_sender.py`：Telegram 發送（公開 / VIP / 緊急）
+- `report_builder.py`：報告組裝（含 ▪️ 格式短線觀察、_format_verdict）
+- `signal_analyzer.py`：ChatGPT 短線觀察
+- `utils.py`：共用工具（含 check_compliance、clean_gemini_output 白名單）
+- `backtest_v1.py`：回測框架（週回測 1w+8w + R6 持有型回測）
+- `config.py`：集中設定（含 TG_TEST）
+- Git repo（多 commits）
+- TG_TEST 測試頻道（ID: -1003777384993）
+
+## 本 Session 完成
+| # | 任務 | Commit |
+|---|------|--------|
+| 測試 | TG_TEST 頻道設定 + 發送驗證 | - |
+| Bug | now.strftime / date 參數名 / TG_VIP import / caption br | 1ff6550 |
+| 報告精簡 | 移除訊號一致性、短線觀察重複段 | aa08b0b |
+| 合規檢查 | check_compliance 關鍵詞偵測 | 998daa9 |
+| 格式 | 短線觀察改 ▪️ 標記 | 48f6919 |
+| 格式 | 短線觀察統一換行格式 | cb7bee8 |
+| R5.7 | 多週期回測（1週 + 8週） | 1f54213 |
+| R6 | 持有型回測 holding_backtest | 78b102c |
+| COT | 近8週趨勢改文字格式 | a0ee852 |
+| 污染修正 | clean_gemini_output 白名單策略 | 3cf5776 |
 
 ## 目前狀態
-判斷引擎 v2 完成，等待：
-1. 重構 `jpy_weekly_report.py`（1884行 → 多模組）
-2. 補測試：`evaluate_jpy_direction` 邊界情境
+所有核心功能完成，測試頻道驗證通過（公開 + VIP 均送出）。
 
-## 下一步
-- 重構計畫：utils → telegram_sender → data_fetcher → signal_analyzer → report_builder → main
-- 每步拆完需驗證 syntax + 跑一次 dry-run
+## 尚未開始
+| # | 任務 | 優先度 |
+|---|------|--------|
+| R1 | 重構 jpy_weekly_report.py → 多模組（已有計畫） | 低（目前 381 行可接受） |
+| T1 | evaluate_jpy_direction 邊界測試補強 | 中 |
 
 ## 風險
-- FRED API 偶爾 timeout（已有 fallback cache）
+- FRED API 偶爾 timeout（D1 fallback 已有三層，但首次跑無快取）
 - 重構過程中 Telegram 發送不能中斷
 - `.gh-pages` 是 embedded git repo，需注意
+
+## Telegram 頻道
+| 用途 | 環境變數 | ID |
+|------|---------|-----|
+| 公開 | TG_PUBLIC | -1003598327129 |
+| VIP  | TG_VIP   | -1003801733194 |
+| 測試 | TG_TEST  | -1003777384993 |
+
+## 對外網址
+- GitHub Pages：https://aqua5230.github.io/jpy-weekly/
+- Telegraph：每次跑產新的（最近：https://telegra.ph/日圓週報-2026年03月28日-03-28-10）
