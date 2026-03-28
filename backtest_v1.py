@@ -37,16 +37,96 @@ def evaluate_one_case(date, score, close_price, next_close_price):
     # 回傳 (next_week_return, correct)
     return (next_week_return, correct)
 
-# Step 5：手動測試資料（2026-03-24，score 用 -0.5 示範分歧情境）
-# close_price = 149.50（模擬上週收盤）
-# next_close_price = 150.80（模擬下週收盤，日圓貶值方向）
-# score = -0.5（分歧，看貶，日圓貶值 → next_week_return 應 > 0 → correct = True）
+# Step 5：compute_stats
+def compute_stats(results):
+    # results 是 list of dict，每筆有 score, return, correct
+    total_count = len(results)
+    
+    # valid_count = score != 0 的筆數
+    valid_results = [r for r in results if r['score'] != 0]
+    valid_count = len(valid_results)
+    
+    # win_rate = correct==True 的筆數 / valid_count
+    if valid_count == 0:
+        win_rate = None
+    else:
+        correct_count = sum(1 for r in valid_results if r['correct'] is True)
+        win_rate = correct_count / valid_count
+    
+    # avg_return_by_score：對每個 score 值計算平均 return
+    avg_return_by_score = {}
+    for score_val in [1, -0.5, 0]:
+        score_results = [r for r in results if r['score'] == score_val]
+        if score_results:
+            avg_ret = sum(r['return'] for r in score_results) / len(score_results)
+            avg_return_by_score[score_val] = avg_ret
+    
+    return {
+        'total_count': total_count,
+        'valid_count': valid_count,
+        'win_rate': win_rate,
+        'avg_return_by_score': avg_return_by_score
+    }
 
+# Step 6：多筆回測 + 統計
 if __name__ == '__main__':
-    result = evaluate_one_case(
-        date='2026-03-24',
-        score=-0.5,
+    print('=== 開始多筆回測 ===\n')
+    
+    backtest_results = []
+    
+    # 測資設計：
+    # 筆1: score=+1（順勢看升），日圓升（USD/JPY 下跌）→ correct=True
+    ret1, correct1 = evaluate_one_case(
+        date='2026-03-17',
+        score=1,
         close_price=149.50,
-        next_close_price=150.80,
+        next_close_price=148.80,  # 下跌，日圓升
     )
-    print('Done:', result)
+    backtest_results.append({'score': 1, 'return': ret1, 'correct': correct1})
+    
+    # 筆2: score=+1（順勢看升），日圓貶（USD/JPY 上漲）→ correct=False
+    ret2, correct2 = evaluate_one_case(
+        date='2026-03-24',
+        score=1,
+        close_price=149.50,
+        next_close_price=151.20,  # 上漲，日圓貶
+    )
+    backtest_results.append({'score': 1, 'return': ret2, 'correct': correct2})
+    
+    # 筆3: score=-0.5（分歧看貶），日圓貶（USD/JPY 上漲）→ correct=True
+    ret3, correct3 = evaluate_one_case(
+        date='2026-03-31',
+        score=-0.5,
+        close_price=150.00,
+        next_close_price=151.50,  # 上漲，日圓貶
+    )
+    backtest_results.append({'score': -0.5, 'return': ret3, 'correct': correct3})
+    
+    # 筆4: score=-0.5（分歧看貶），日圓升（USD/JPY 下跌）→ correct=False
+    ret4, correct4 = evaluate_one_case(
+        date='2026-04-07',
+        score=-0.5,
+        close_price=151.00,
+        next_close_price=149.30,  # 下跌，日圓升
+    )
+    backtest_results.append({'score': -0.5, 'return': ret4, 'correct': correct4})
+    
+    # 筆5: score=0（不交易），任意方向 → correct=None
+    ret5, correct5 = evaluate_one_case(
+        date='2026-04-14',
+        score=0,
+        close_price=149.80,
+        next_close_price=150.50,  # 任意方向
+    )
+    backtest_results.append({'score': 0, 'return': ret5, 'correct': correct5})
+    
+    print('\n=== 統計結果 ===')
+    stats = compute_stats(backtest_results)
+    
+    print(f'總筆數: {stats["total_count"]}')
+    print(f'有效筆數（排除 score=0）: {stats["valid_count"]}')
+    print(f'勝率: {stats["win_rate"]:.1%}' if stats["win_rate"] is not None else 'N/A')
+    print('各 score 平均報酬:')
+    for score_val in sorted(stats["avg_return_by_score"].keys()):
+        avg_ret = stats["avg_return_by_score"][score_val]
+        print(f'  score={score_val:+g}: {avg_ret*100:+.2f}%')
