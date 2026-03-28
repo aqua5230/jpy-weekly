@@ -7,12 +7,18 @@ logger = logging.getLogger(__name__)
 
 ALLOWED_TELEGRAM_HTML_PATTERN = re.compile(r"(</?(?:b|code|blockquote)>|<br>)")
 
-_REDUNDANT_VERDICT_TAGS = ["央行在做什麼", "利率差距說什麼", "大戶在做什麼"]
-
-def _trim_verdict(text):
-    """移除 verdict 中與上方區塊重疊的子段落，保留不重複的觀察"""
-    for tag in _REDUNDANT_VERDICT_TAGS:
-        text = re.sub(rf'【{tag}】[^【]*', '', text)
+def _format_verdict(text: str) -> str:
+    replacements = {
+        "【數據觀察摘要】": "\n▪️ 總結　",
+        "【央行在做什麼】": "\n▪️ 央行　",
+        "【利率差距說什麼】": "\n▪️ 利差　",
+        "【大戶在做什麼】": "\n▪️ 大戶　",
+        "【這週要盯什麼】": "\n▪️ 下週觀察　",
+        "【本週指標整理】": "",
+    }
+    for source, target in replacements.items():
+        text = text.replace(source, target)
+    text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
 
 
@@ -182,7 +188,7 @@ def build_full_report(now, usdjpy, direction, change, pct, danger_zone,
     bop_block = f"\n【🌊 國際收支】\n{bop_text}" if bop_text else ""
     fiscal_block = f"\n【🏛 財政融資結構】\n{fiscal_text}" if fiscal_text else ""
     mfg_import_block = f"\n【📦 製成品進口】\n{mfg_import_text}" if mfg_import_text else ""
-    trimmed_verdict = _trim_verdict(verdict) if verdict else ""
+    trimmed_verdict = _format_verdict(verdict) if verdict else ""
     return f"""日圓週報　{now}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
