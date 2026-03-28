@@ -94,10 +94,16 @@ def log_prediction(date_str, werner_direction, position_score, close_price, log_
         'werner_direction': werner_direction,
         'position_score': position_score,
         'close_price': close_price,
-        'next_close_price': None,
-        'next_week_return': None,
-        'correct': None,
+        # 1週
+        'next_1w_price': None,
+        'return_1w': None,
+        'correct_1w': None,
+        # 8週
+        'next_8w_price': None,
+        'return_8w': None,
+        'correct_8w': None,
         'status': 'pending',
+        'status_8w': 'pending',
     })
 
     # 寫回
@@ -129,59 +135,46 @@ def save_prediction_log(log_path, records):
 
 
 def resolve_pending_predictions(records, price_lookup):
-    """對每筆 status=='pending' 的紀錄：
-    計算 next_date = date + 7天
-    若 next_date 的字串在 price_lookup 裡：
-      寫入 next_close_price
-      計算 next_week_return = (next_close_price - close_price) / close_price
-      判斷 correct：
-        score > 0 且 return < 0 → True
-        score < 0 且 return > 0 → True
-        score == 0 → None
-        否則 → False
-      status 改成 'resolved'
-    若 price_lookup 沒有下週日期，保持 pending
+    """對每筆 pending 的紀錄同時結算 1週和 8週預測。
     回傳 (records, resolved_count, pending_count)
     """
+    import datetime as dt
     resolved_count = 0
     pending_count = 0
-    
-    for record in records:
-        if record['status'] != 'pending':
-            continue
-        
-        # 計算下週日期
-        current_date = date.fromisoformat(record['date'])
-        next_date = current_date + timedelta(days=7)
-        next_date_str = next_date.isoformat()
-        
-        # 檢查是否有下週價格
-        if next_date_str in price_lookup:
-            next_close_price = price_lookup[next_date_str]
-            close_price = record['close_price']
-            score = record['position_score']
-            
-            # 計算 return
-            next_week_return = (next_close_price - close_price) / close_price
-            
-            # 判斷 correct
-            if score > 0:
-                correct = next_week_return < 0
-            elif score < 0:
-                correct = next_week_return > 0
+    for r in records:
+        record_date = dt.date.fromisoformat(r['date'])
+        # --- 結算 1週 ---
+        if r.get('status') == 'pending':
+            next_1w = str(record_date + dt.timedelta(days=7))
+            if next_1w in price_lookup:
+                r['next_1w_price'] = price_lookup[next_1w]
+                r['return_1w'] = (r['next_1w_price'] - r['close_price']) / r['close_price']
+                score = r['position_score']
+                if score == 0:
+                    r['correct_1w'] = None
+                elif score > 0:
+                    r['correct_1w'] = r['return_1w'] < 0
+                else:
+                    r['correct_1w'] = r['return_1w'] > 0
+                r['status'] = 'resolved'
+                resolved_count += 1
             else:
-                correct = None
-            
-            # 更新 record
-            record['next_close_price'] = next_close_price
-            record['next_week_return'] = next_week_return
-            record['correct'] = correct
-            record['status'] = 'resolved'
-            resolved_count += 1
-        else:
-            pending_count += 1
-    
-    return (records, resolved_count, pending_count)
+                pending_count += 1
+        # --- 結算 8週 ---
+        if r.get('status_8w') == 'pending':
+            next_8w = str(record_date + dt.timedelta(days=56))
+            if next_8w in price_lookup:
+                r['next_8w_price'] = price_lookup[next_8w]
+                r['return_8w'] = (r['next_8w_price'] - r['close_price']) / r['close_price']
+                score = r['position_score']
+                if score == 0:
+                    r['correct_8w'] = None
+                elif score > 0:
+                    r['correct_8w'] = r['return_8w'] < 0
+                else:
+                    r['correct_8w'] = r['return_8w'] > 0
+                r['status_8w'] = 'resolved'
+    return records, resolved_count, pending_count
 
 
 # Step 6：多筆回測 + 統計
@@ -257,20 +250,18 @@ if __name__ == '__main__':
             'werner_direction': '升',
             'position_score': 1,
             'close_price': 149.50,
-            'next_close_price': None,
-            'next_week_return': None,
-            'correct': None,
-            'status': 'pending',
+            'next_1w_price': None, 'return_1w': None, 'correct_1w': None,
+            'next_8w_price': None, 'return_8w': None, 'correct_8w': None,
+            'status': 'pending', 'status_8w': 'pending',
         },
         {
             'date': '2026-03-31',
             'werner_direction': '貶',
             'position_score': -0.5,
             'close_price': 150.00,
-            'next_close_price': None,
-            'next_week_return': None,
-            'correct': None,
-            'status': 'pending',
+            'next_1w_price': None, 'return_1w': None, 'correct_1w': None,
+            'next_8w_price': None, 'return_8w': None, 'correct_8w': None,
+            'status': 'pending', 'status_8w': 'pending',
         },
     ]
 
