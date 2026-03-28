@@ -42,6 +42,7 @@ from report_builder import (
 from signal_analyzer import get_weekly_verdict
 from telegram_sender import TELEGRAM_DISCLAIMER, append_telegram_disclaimer, send_emergency_telegram, split_telegram_text, build_direction_summary, send_photo_to_chat, send_public_report, send_vip_report
 from backtest_v1 import log_prediction, load_prediction_log, save_prediction_log, resolve_pending_predictions
+from utils import check_compliance
 
 logging.basicConfig(
     filename=LOG_FILE,
@@ -427,6 +428,7 @@ def main():
 
         summary = build_direction_summary(verdict, direction, change)
 
+        check_compliance(report)
         public_result = send_public_report(img_path, summary)
         if public_result.json().get('ok'):
             logger.info("公開 Telegram 已送出")
