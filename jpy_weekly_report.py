@@ -315,12 +315,19 @@ def main():
         else ""
     )
 
+    if werner_dir == '中性':
+        action_note = '無明確結構方向，避免交易'
+    elif signal_dir == werner_dir:
+        action_note = '趨勢一致，可順勢'
+    else:
+        action_note = '結構與短線分歧，建議觀望或降低部位'
+
     # 存純文字檔
     report = build_full_report(now, usdjpy, direction, change, pct, danger_zone,
                                cot, news, calendar, levels_plain, levels_annotated, verdict,
                                us10y, jp10y, spread, spread_trend, rsi, rsi_signal, cb_text, mof_text, lending_text,
                                boj_qe_text, eurjpy_text, signal_summary, bop_text=bop_text, fiscal_text=fiscal_text, mfg_import_text=mfg_import_text,
-                               werner_block=werner_block, divergence_note=divergence_note)
+                               werner_block=werner_block, divergence_note=divergence_note, action_note=action_note)
     output_path = os.path.expanduser(f"~/Desktop/投資/日圓週報_{datetime.now().strftime('%Y%m%d')}.txt")
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(report)
