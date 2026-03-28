@@ -7,6 +7,14 @@ logger = logging.getLogger(__name__)
 
 ALLOWED_TELEGRAM_HTML_PATTERN = re.compile(r"(</?(?:b|code|blockquote)>|<br>)")
 
+_REDUNDANT_VERDICT_TAGS = ["央行在做什麼", "利率差距說什麼", "大戶在做什麼"]
+
+def _trim_verdict(text):
+    """移除 verdict 中與上方區塊重疊的子段落，保留不重複的觀察"""
+    for tag in _REDUNDANT_VERDICT_TAGS:
+        text = re.sub(rf'【{tag}】[^【]*', '', text)
+    return text.strip()
+
 
 def escape_html_preserving_allowed_tags(text):
     parts = ALLOWED_TELEGRAM_HTML_PATTERN.split(str(text or ""))
@@ -174,7 +182,7 @@ def build_full_report(now, usdjpy, direction, change, pct, danger_zone,
     bop_block = f"\n【🌊 國際收支】\n{bop_text}" if bop_text else ""
     fiscal_block = f"\n【🏛 財政融資結構】\n{fiscal_text}" if fiscal_text else ""
     mfg_import_block = f"\n【📦 製成品進口】\n{mfg_import_text}" if mfg_import_text else ""
-    signal_block = f"\n━━ 訊號一致性 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n{signal_summary}\n" if signal_summary else ""
+    trimmed_verdict = _trim_verdict(verdict) if verdict else ""
     return f"""日圓週報　{now}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -192,7 +200,6 @@ USD/JPY　{usdjpy:.2f}　　本週日圓{direction} {abs(change):.2f}（{pct:.2f
 {bop_block}
 {fiscal_block}
 {mfg_import_block}
-{signal_block}
 
 ━━ 本週重要事件 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -210,8 +217,7 @@ USD/JPY　{usdjpy:.2f}　　本週日圓{direction} {abs(change):.2f}（{pct:.2f
 
 ━━ 短線觀察（技術 / COT）━━━━━━━━━━━━━━━━━━━━━━━━━
 
-【短線觀察（技術 / COT）】
-{verdict}
+{trimmed_verdict}
 {werner_section}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 本報告為個人市場觀察記錄，所有數字與內容僅供參考，不構成任何投資建議。讀者應自行判斷並承擔投資風險。"""
