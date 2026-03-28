@@ -153,11 +153,12 @@ def build_full_report(now, usdjpy, direction, change, pct, danger_zone,
                       cb_text=None, mof_text=None, lending_text=None,
                       boj_qe_text=None, eurjpy_text=None, signal_summary=None,
                       bop_text=None, fiscal_text=None, mfg_import_text=None,
-                      werner_block=None, divergence_note=None):
+                      werner_block=None, divergence_note=None, action_note=None):
     """純文字版，存檔用"""
     divergence_line = f"\n{divergence_note}" if divergence_note else ""
+    action_section = f'\n【行動建議】{action_note}\n' if action_note else ''
     werner_section = (
-        f"\n━━ 結構判斷（Werner 四原則）━━━━━━━━━━━━━━━━━━━━━━━━\n\n【結構判斷（Werner）】\n{werner_block}{divergence_line}\n"
+        f"\n━━ 結構判斷（Werner 四原則）━━━━━━━━━━━━━━━━━━━━━━━━\n\n【結構判斷（Werner）】\n{werner_block}{divergence_line}{action_section}\n"
         if werner_block else ""
     )
     eurjpy_line = f"EUR/JPY 確認　{eurjpy_text}\n" if eurjpy_text else ""
