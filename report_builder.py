@@ -9,15 +9,17 @@ ALLOWED_TELEGRAM_HTML_PATTERN = re.compile(r"(</?(?:b|code|blockquote)>|<br>)")
 
 def _format_verdict(text: str) -> str:
     replacements = {
-        "【數據觀察摘要】": "\n▪️ 總結　",
-        "【央行在做什麼】": "\n▪️ 央行　",
-        "【利率差距說什麼】": "\n▪️ 利差　",
-        "【大戶在做什麼】": "\n▪️ 大戶　",
-        "【這週要盯什麼】": "\n▪️ 下週觀察　",
+        "【數據觀察摘要】": "\n▪️ 總結\n",
+        "【央行在做什麼】": "\n▪️ 央行\n",
+        "【利率差距說什麼】": "\n▪️ 利差\n",
+        "【大戶在做什麼】": "\n▪️ 大戶\n",
+        "【這週要盯什麼】": "\n▪️ 下週觀察\n",
         "【本週指標整理】": "",
     }
     for source, target in replacements.items():
         text = text.replace(source, target)
+    text = re.sub(r"理由：", "\n▪️ 理由\n", text)
+    text = re.sub(r"風險：", "\n▪️ 風險\n", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
 
