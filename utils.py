@@ -131,3 +131,9 @@ def save_text_cache(path, text: str) -> None:
             json.dump({"text": text, "saved_at": datetime.now().isoformat()}, f, ensure_ascii=False)
     except Exception:
         pass
+
+
+def check_compliance(report_text: str) -> None:
+    keywords = ["建議做多", "建議做空", "買進", "賣出", "布局", "目標價", "停損", "進場"]
+    if any(keyword in report_text for keyword in keywords):
+        logger.warning("⚠️ Compliance Warning: possible investment advice detected")
