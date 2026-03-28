@@ -274,3 +274,42 @@ if __name__ == '__main__':
     print(f'resolved: {resolved} 筆，仍 pending: {pending} 筆')
     for r in records:
         print(json.dumps(r, ensure_ascii=False))
+
+
+def holding_backtest(records: list) -> dict:
+    position = 0
+    entry_price = None
+    trades = []
+
+    for record in records:
+        score = record['position_score']
+        price = record['close_price']
+
+        if score == 1 and position == 0:
+            position = 1
+            entry_price = price
+        elif position == 1 and score < 0:
+            ret = (entry_price - price) / entry_price
+            trades.append({
+                'entry': entry_price,
+                'exit': price,
+                'return': ret,
+                'correct': ret > 0,
+            })
+            position = 0
+            entry_price = None
+
+    total = len(trades)
+    if total == 0:
+        win_rate = 0.0
+        avg_return = 0.0
+    else:
+        win_rate = sum(1 for trade in trades if trade['correct']) / total
+        avg_return = sum(trade['return'] for trade in trades) / total
+
+    return {
+        'trades': trades,
+        'total': total,
+        'win_rate': win_rate,
+        'avg_return': avg_return,
+    }

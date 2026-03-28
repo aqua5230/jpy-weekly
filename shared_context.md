@@ -1,49 +1,65 @@
 ## 任務目標
-統一 report_builder.py 中 _format_verdict 的輸出格式。
-不改內容，只改排版：所有段落統一為「▪️ 標題\n內容」格式。
+在 backtest_v1.py 新增 R6：持有型回測（Holding Backtest）函式。
+不改原有任何函式，只新增。
 
-## 目前問題
-_format_verdict 現在輸出：
-  ▪️ 總結　本週日圓偏弱   ← 標題與內容同一行（全形空格分隔）
-  理由：利差擴大           ← inline 標籤，不是 ▪️ 格式
-  風險：⚠️ 本段為公開數據整理  ← 同上
+## 規格
 
-## 要求
-修改 _format_verdict 函式（report_builder.py），改動如下：
+新增函式 `holding_backtest(records: list) -> dict`，加在 backtest_v1.py 最底部。
 
-1. 所有 replacements 的 target 改為 "\n▪️ 標題\n" 格式（標題後換行，不用全形空格）：
-   "【數據觀察摘要】" → "\n▪️ 總結\n"
-   "【央行在做什麼】"   → "\n▪️ 央行\n"
-   "【利率差距說什麼】" → "\n▪️ 利差\n"
-   "【大戶在做什麼】"   → "\n▪️ 大戶\n"
-   "【這週要盯什麼】"   → "\n▪️ 下週觀察\n"
-   "【本週指標整理】"   → ""（保持空字串，內容保留）
+入參：
+- records：list of dict，從 load_prediction_log 讀出來的記錄，已按 date 排序
+  每筆有：date, position_score, close_price
 
-2. 在 replacements 之後，加上這兩個替換（處理 inline 標籤）：
-   text = re.sub(r'理由：', '\n▪️ 理由\n', text)
-   text = re.sub(r'風險：', '\n▪️ 風險\n', text)
+邏輯（按照 date 順序逐筆執行）：
+- position = 0（無持倉）
+- entry_price = None
+- trades = []
 
-3. 保留現有的 re.sub(r'\n{3,}', '\n\n', text) 清除多餘空行
-4. 保留 return text.strip()
+for 每筆 record：
+  score = record["position_score"]
+  price = record["close_price"]
+
+  if score == 1 and position == 0:
+      position = 1
+      entry_price = price
+
+  elif position == 1 and score < 0:
+      ret = (entry_price - price) / entry_price  # 日圓升值 = USD/JPY 下跌
+      trades.append({"entry": entry_price, "exit": price, "return": ret, "correct": ret > 0})
+      position = 0
+      entry_price = None
+
+  # score == 0 且已有持倉 → 繼續持有（不動）
+  # score == 1 且已有持倉 → 繼續持有（不動）
+
+回傳 dict：
+{
+  "trades": trades,           # list of {entry, exit, return, correct}
+  "total": len(trades),
+  "win_rate": 勝率（float，0.0 若無交易）,
+  "avg_return": 平均報酬（float，0.0 若無交易）,
+}
 
 ## 禁止
-- 不改其他函式
-- 不改 signal_analyzer.py
-- 不改 telegram_sender.py
+- 不改 log_prediction / resolve_pending_predictions / load_prediction_log
+- 不接 API
 - 不改 decision_engine.py
+- 不新增新檔案
 
 ## 驗收條件
 python3 -c "
-from report_builder import _format_verdict
-t = '【數據觀察摘要】本週日圓偏弱\n理由：利差擴大\n風險：⚠️ 本段為公開數據整理\n【央行在做什麼】縮表\n【這週要盯什麼】注意160'
-r = _format_verdict(t)
-assert '▪️ 總結\n' in r, '總結格式錯誤'
-assert '▪️ 理由\n' in r, '理由格式錯誤'
-assert '▪️ 風險\n' in r, '風險格式錯誤'
-assert '▪️ 央行\n' in r, '央行格式錯誤'
-assert '▪️ 下週觀察\n' in r, '下週觀察格式錯誤'
-print('PASS')
-print(r)
+from backtest_v1 import holding_backtest
+records = [
+  {'date': '2026-01-01', 'position_score': 1,    'close_price': 150.0},
+  {'date': '2026-01-08', 'position_score': 1,    'close_price': 149.0},
+  {'date': '2026-01-15', 'position_score': 0,    'close_price': 148.5},
+  {'date': '2026-01-22', 'position_score': -0.5, 'close_price': 151.0},
+  {'date': '2026-01-29', 'position_score': 1,    'close_price': 149.5},
+  {'date': '2026-02-05', 'position_score': -0.5, 'close_price': 147.0},
+]
+r = holding_backtest(records)
+assert r['total'] == 2, f'expected 2 trades, got {r[\"total\"]}'
+print('PASS', r)
 "
 
 ## Codex 結果
