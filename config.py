@@ -20,6 +20,7 @@ if not TG_PUBLIC:
     raise RuntimeError("請設定環境變數 TG_PUBLIC")
 
 TG_VIP     = os.environ.get("TG_VIP", "")
+TG_TEST    = os.environ.get("TG_TEST", "")
 TG_DEV     = os.environ.get("TG_DEV", TG_PUBLIC)
 
 # ── 關鍵價位（兩支程式共用）──────────────────────
