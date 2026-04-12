@@ -91,7 +91,18 @@ def main():
     # ── R5.5 自動結算舊預測 ──────────────────────────────────
     today_str = datetime.now().strftime('%Y-%m-%d')
     _pred_records = load_prediction_log(str(PREDICTION_LOG))
-    _price_lookup = {today_str: round(float(usdjpy), 2)}
+    # 補抓 60 天歷史價格，確保 +7d / +56d 到期的預測能結算
+    try:
+        import yfinance as yf
+        _hist = yf.download('USDJPY=X', period='60d', interval='1d', progress=False, auto_adjust=True)
+        _price_lookup = {
+            str(d.date()): round(float(p), 2)
+            for d, p in zip(_hist.index, _hist['Close'].squeeze())
+            if not __import__('math').isnan(float(p))
+        }
+    except Exception:
+        _price_lookup = {}
+    _price_lookup[today_str] = round(float(usdjpy), 2)
     _pred_records, _resolved, _pending = resolve_pending_predictions(_pred_records, _price_lookup)
     if _resolved > 0:
         save_prediction_log(str(PREDICTION_LOG), _pred_records)
