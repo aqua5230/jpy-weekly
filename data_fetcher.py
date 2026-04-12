@@ -378,7 +378,7 @@ def get_news_from_gemini():
         "2. 匯率關鍵事件仍以經濟數據與央行訊號為主：留意高影響力行事曆\n"
         "3. 本次改用備援文字繼續產出報告：下次執行會再嘗試更新摘要"
     )
-    result = run_text_command(['gemini', '-p', prompt, '--yolo'], timeout=180, fallback_text=fallback)
+    result = run_text_command(['gemini', '-p', prompt, '--model', 'gemini-2.5-pro', '--yolo'], timeout=180, fallback_text=fallback)
     return clean_gemini_output(result)
 
 
@@ -665,7 +665,7 @@ def get_boj_qe_type():
             "AI 摘要逾時或失敗，暫以既有官方資料與市場觀察為主。\n"
             "解讀：本段改用備援文字，不中斷整體報告流程。"
         )
-        result = run_text_command(['gemini', '-p', prompt, '--yolo'], timeout=180, fallback_text=fallback)
+        result = run_text_command(['gemini', '-p', prompt, '--model', 'gemini-2.5-pro', '--yolo'], timeout=180, fallback_text=fallback)
         # 清除 Gemini 廢話前言
         result = '\n'.join(
             line for line in result.split('\n')

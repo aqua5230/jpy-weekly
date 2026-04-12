@@ -1,6 +1,6 @@
 # 投資專案 Session 狀態
 
-更新日期：2026-03-28
+更新日期：2026-04-12
 
 ## 專案目標
 日圓週報自動化系統 + Werner 四原則判斷引擎
@@ -25,19 +25,14 @@
 ## 本 Session 完成
 | # | 任務 | Commit |
 |---|------|--------|
-| 測試 | TG_TEST 頻道設定 + 發送驗證 | - |
-| Bug | now.strftime / date 參數名 / TG_VIP import / caption br | 1ff6550 |
-| 報告精簡 | 移除訊號一致性、短線觀察重複段 | aa08b0b |
-| 合規檢查 | check_compliance 關鍵詞偵測 | 998daa9 |
-| 格式 | 短線觀察改 ▪️ 標記 | 48f6919 |
-| 格式 | 短線觀察統一換行格式 | cb7bee8 |
-| R5.7 | 多週期回測（1週 + 8週） | 1f54213 |
-| R6 | 持有型回測 holding_backtest | 78b102c |
-| COT | 近8週趨勢改文字格式 | a0ee852 |
-| 污染修正 | clean_gemini_output 白名單策略 | 3cf5776 |
+| Bug | jpy_weekly_report.py syntax error（3行被錯誤 comment） | 37db5d9 |
+| 設定 | config.py 補上 TG_TEST | 37db5d9 |
+| 新增 | backtest_predictions.json 初始化納入 git 追蹤 | 37db5d9 |
+| Bug | Gemini 呼叫補 --model gemini-2.5-pro（修逾時） | - |
+| Bug | price_lookup 補 60 天歷史，回測結算不再永遠 0 筆 | - |
 
 ## 目前狀態
-所有核心功能完成，測試頻道驗證通過（公開 + VIP 均送出）。
+4/12 週報已產出並推送（公開 + VIP）。兩個功能性 bug 已修，尚未 commit。
 
 ## 尚未開始
 | # | 任務 | 優先度 |
