@@ -1,0 +1,30 @@
+[
+  {
+    "date": "2026-03-28",
+    "werner_direction": "中性",
+    "position_score": 0,
+    "close_price": 159.7,
+    "next_1w_price": null,
+    "return_1w": null,
+    "correct_1w": null,
+    "next_8w_price": null,
+    "return_8w": null,
+    "correct_8w": null,
+    "status": "pending",
+    "status_8w": "pending"
+  },
+  {
+    "date": "2026-04-12",
+    "werner_direction": "中性",
+    "position_score": 0,
+    "close_price": 159.24,
+    "next_1w_price": null,
+    "return_1w": null,
+    "correct_1w": null,
+    "next_8w_price": null,
+    "return_8w": null,
+    "correct_8w": null,
+    "status": "pending",
+    "status_8w": "pending"
+  }
+]
