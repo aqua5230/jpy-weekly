@@ -10,11 +10,13 @@ import os
 import logging
 import requests
 from datetime import datetime
+from pathlib import Path
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 from config import TG_TOKEN, TG_PUBLIC as TG_CHAT_ID, TG_DEV, ALERT_LEVELS
 
-STATE_FILE = os.path.expanduser("~/Desktop/投資/.last_state.json")
-LOG_FILE = os.path.expanduser("~/Desktop/投資/.report.log")
+BASE_DIR = Path(os.environ.get("JPY_BASE_DIR", Path(__file__).resolve().parent))
+STATE_FILE = BASE_DIR / ".last_state.json"
+LOG_FILE = BASE_DIR / ".report.log"
 
 logging.basicConfig(
     filename=LOG_FILE,

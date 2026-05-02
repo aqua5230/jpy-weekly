@@ -2,9 +2,6 @@
 .telegraph_token
 .report.log
 *.log
-.cot_history.json
-.boj_qe_cache.json
-.calendar_cache.json
 .report_card.png
 __pycache__/
 .DS_Store
@@ -18,3 +15,6 @@ tests/__pycache__/
 .claude/
 tests/__pycache__/
 .gh-pages/
+*.bak.*
+dist/
+.last_weekly_run_date

@@ -3,8 +3,10 @@
 from PIL import Image, ImageDraw, ImageFont
 import requests
 import os
+from pathlib import Path
 from config import TG_TOKEN, TG_PUBLIC
 
+BASE_DIR = Path(os.environ.get("JPY_BASE_DIR", Path(__file__).resolve().parent))
 FONT_PATH = "/System/Library/Fonts/STHeiti Medium.ttc"
 MONO_PATH = "/System/Library/Fonts/Menlo.ttc"
 
@@ -24,7 +26,24 @@ ACCENT   = "#1f6feb"
 W, PAD = 900, 44
 
 def font(size, mono=False):
-    return ImageFont.truetype(MONO_PATH if mono else FONT_PATH, size)
+    font_candidates = []
+    if mono:
+        font_candidates.extend([
+            MONO_PATH,
+            "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+        ])
+    else:
+        font_candidates.extend([
+            FONT_PATH,
+            "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+            "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        ])
+
+    for candidate in font_candidates:
+        if os.path.exists(candidate):
+            return ImageFont.truetype(candidate, size)
+    return ImageFont.load_default()
 
 def text_w(draw, text, f):
     return draw.textlength(text, font=f)
@@ -322,11 +341,11 @@ if __name__ == '__main__':
     }
 
     img = draw_card(data)
-    out = os.path.expanduser("~/Desktop/投資/test_card.png")
+    out = BASE_DIR / "test_card.png"
     img.save(out, quality=95)
     print(f"圖片已存：{out}")
 
-    result = send_photo(out)
+    result = send_photo(str(out))
     if result.get('ok'):
         print("✅ 圖片已發送到 TG")
     else:

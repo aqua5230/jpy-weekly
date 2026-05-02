@@ -2,13 +2,16 @@
 """方案合併測試：圖片卡片 + Telegraph 完整報告連結"""
 import os
 import sys
+from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from test_image import draw_card, send_photo
+from test_image import draw_card
 from test_telegraph import create_telegraph_account, publish_to_telegraph, build_nodes
 import requests
 from config import TG_TOKEN, TG_PUBLIC
+
+BASE_DIR = Path(os.environ.get("JPY_BASE_DIR", Path(__file__).resolve().parent.parent))
 
 def send_card_with_link(img_path, tg_url, data):
     arrow = "📉" if data['change'] < 0 else "📈"
@@ -47,7 +50,7 @@ if __name__ == '__main__':
 
     print("🖼  生成圖片卡片...")
     img = draw_card(data)
-    out = os.path.expanduser("~/Desktop/投資/test_card.png")
+    out = BASE_DIR / "test_card.png"
     img.save(out, quality=95)
 
     print("📝 發佈 Telegraph...")
@@ -57,7 +60,7 @@ if __name__ == '__main__':
     print(f"   {tg_url}")
 
     print("📨 發送到 TG...")
-    result = send_card_with_link(out, tg_url, data)
+    result = send_card_with_link(str(out), tg_url, data)
     if result.get('ok'):
         print("✅ 完成")
     else:

@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 import re
 import os
 from datetime import datetime
+from pathlib import Path
 from config import (
     DANGER_HIGH,
     DANGER_MID,
@@ -19,7 +20,7 @@ from config import (
 )
 from data_fetcher import (
     collect_data_source_result,
-    get_usdjpy, load_cot_history, get_cot_with_history,
+    get_usdjpy, get_cot_with_history,
     get_tff_data, get_news_from_gemini, get_economic_calendar,
     get_rate_differential, get_us2y_jp2y_spread, get_next_meeting_countdown,
     get_cb_balance_sheets, get_boj_qe_type, get_mof_intervention,
@@ -29,18 +30,13 @@ from data_fetcher import (
 from test_image import draw_card
 from test_telegraph import create_telegraph_account, publish_to_telegraph, build_nodes
 from build_html_report import build_html, push_to_github_pages
-from decision_engine import decide_jpy_direction, evaluate_jpy_direction
+from decision_engine import evaluate_jpy_direction
 from report_builder import (
-    ALLOWED_TELEGRAM_HTML_PATTERN,
-    escape_html_preserving_allowed_tags,
-    parse_tagged_blocks,
-    extract_vip_highlights,
-    build_vip_report_html,
     build_card_status_snapshot,
     build_full_report,
 )
 from signal_analyzer import get_weekly_verdict
-from telegram_sender import TELEGRAM_DISCLAIMER, append_telegram_disclaimer, send_emergency_telegram, split_telegram_text, build_direction_summary, send_photo_to_chat, send_public_report, send_vip_report
+from telegram_sender import send_emergency_telegram, build_direction_summary, send_public_report, send_vip_report
 from backtest_v1 import log_prediction, load_prediction_log, save_prediction_log, resolve_pending_predictions
 from utils import check_compliance
 
@@ -50,6 +46,7 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
 )
 logger = logging.getLogger(__name__)
+BASE_DIR = Path(os.environ.get("JPY_BASE_DIR", Path(__file__).resolve().parent))
 
 
 def send_data_health_alert(failures):
@@ -254,13 +251,10 @@ def main():
     if total_signals > 0:
         if len(signals_bullish) > len(signals_bearish):
             dominant = f"偏向日圓升值（{len(signals_bullish)}/{total_signals} 個訊號）"
-            dominant_detail = "、".join(signals_bullish)
         elif len(signals_bearish) > len(signals_bullish):
             dominant = f"偏向日圓貶值（{len(signals_bearish)}/{total_signals} 個訊號）"
-            dominant_detail = "、".join(signals_bearish)
         else:
             dominant = f"方向分歧（各 {len(signals_bullish)}/{total_signals} 個訊號）"
-            dominant_detail = f"升值：{'、'.join(signals_bullish)}；貶值：{'、'.join(signals_bearish)}"
         signal_summary = f"本週訊號一致性：{dominant}\n看漲訊號：{'、'.join(signals_bullish) or '無'}　看跌訊號：{'、'.join(signals_bearish) or '無'}"
     else:
         signal_summary = "本週訊號方向不明"
@@ -360,7 +354,7 @@ def main():
                                us10y, jp10y, spread, spread_trend, rsi, rsi_signal, cb_text, mof_text, lending_text,
                                boj_qe_text, eurjpy_text, signal_summary, bop_text=bop_text, fiscal_text=fiscal_text, mfg_import_text=mfg_import_text,
                                werner_block=werner_block, divergence_note=divergence_note, action_note=action_note, position_score=position_score)
-    output_path = os.path.expanduser(f"~/Desktop/投資/日圓週報_{datetime.now().strftime('%Y%m%d')}.txt")
+    output_path = BASE_DIR / f"日圓週報_{datetime.now().strftime('%Y%m%d')}.txt"
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(report)
 
@@ -415,12 +409,15 @@ def main():
 
     try:
         # Telegraph token 快取
-        if os.path.exists(TG_TOKEN_FILE):
-            with open(TG_TOKEN_FILE) as f:
+        tg_ph_token = os.environ.get("TELEGRAPH_TOKEN", "").strip()
+        if tg_ph_token:
+            logger.info("使用 TELEGRAPH_TOKEN 環境變數")
+        elif os.path.exists(TG_TOKEN_FILE):
+            with open(TG_TOKEN_FILE, encoding="utf-8") as f:
                 tg_ph_token = f.read().strip()
         else:
             tg_ph_token = create_telegraph_account()
-            with open(TG_TOKEN_FILE, 'w') as f:
+            with open(TG_TOKEN_FILE, 'w', encoding='utf-8') as f:
                 f.write(tg_ph_token)
 
         # 生成圖片
