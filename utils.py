@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import re
 import subprocess
 
@@ -79,6 +80,42 @@ def run_text_command(cmd, timeout, fallback_text=""):
         logger.exception("文字模型指令不存在: %s", exc)
     except Exception as exc:
         logger.exception("文字模型執行異常: %s", exc)
+    return fallback_text
+
+
+def call_deepseek(prompt, timeout, fallback_text=""):
+    api_key = os.environ.get("DEEPSEEK_API_KEY")
+    if not api_key:
+        logger.warning("DEEPSEEK_API_KEY 未設定，改用備用文字")
+        return fallback_text
+
+    try:
+        response = requests.post(
+            "https://api.deepseek.com/v1/chat/completions",
+            headers={"Authorization": f"Bearer {api_key}"},
+            json={
+                "model": "deepseek-chat",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.3,
+                "max_tokens": 1000,
+                "stream": False,
+            },
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        payload = response.json()
+        content = payload["choices"][0]["message"]["content"].strip()
+        if content:
+            return content
+        logger.warning("DeepSeek 輸出為空，改用備用文字")
+    except requests.exceptions.Timeout as exc:
+        logger.exception("DeepSeek 請求逾時: %s", exc)
+    except requests.exceptions.RequestException as exc:
+        logger.exception("DeepSeek 請求失敗: %s", exc)
+    except (KeyError, IndexError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        logger.exception("DeepSeek 回應解析失敗: %s", exc)
+    except Exception as exc:
+        logger.exception("DeepSeek 呼叫異常: %s", exc)
     return fallback_text
 
 

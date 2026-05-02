@@ -4,11 +4,12 @@ import json
 import logging
 import os
 import re
-import subprocess
+from pathlib import Path
 
-REPO_DIR = os.path.expanduser("~/Desktop/投資/.gh-pages")
-REPO_URL = "https://github.com/aqua5230/jpy-weekly.git"
-COT_HISTORY_FILE = os.path.expanduser("~/Desktop/投資/.cot_history.json")
+BASE_DIR = Path(os.environ.get("JPY_BASE_DIR", Path(__file__).resolve().parent))
+REPO_DIR = BASE_DIR / ".gh-pages"
+DIST_DIR = BASE_DIR / "dist"
+COT_HISTORY_FILE = BASE_DIR / ".cot_history.json"
 logger = logging.getLogger(__name__)
 
 
@@ -57,8 +58,8 @@ def _normalize_cot_history_rows(items):
 
 def _load_cot_history_rows(cot_history=None):
     try:
-        if os.path.exists(COT_HISTORY_FILE):
-            with open(COT_HISTORY_FILE) as f:
+        if COT_HISTORY_FILE.exists():
+            with open(COT_HISTORY_FILE, encoding="utf-8") as f:
                 file_rows = _normalize_cot_history_rows(json.load(f))
             if file_rows:
                 return file_rows[-52:]
@@ -267,9 +268,9 @@ def _werner_table(lending_text, bop_text, fiscal_text, mfg_text=None):
                 break
     # 長期資本外流
     if bop_text:
-        lines = [l.strip() for l in str(bop_text).split("\n") if l.strip()]
+        lines = [line.strip() for line in str(bop_text).split("\n") if line.strip()]
         fa_line = lines[0] if lines else ""
-        interp = next((l for l in lines if "解讀" in l), "")
+        interp = next((line for line in lines if "解讀" in line), "")
         flow_match = re.search(r"金融帳近4季：\s*([0-9.+-]+B USD)", fa_line)
         flow_text = f"{flow_match.group(1)} 流出" if flow_match else fa_line.replace("金融帳近4季：", "").replace("（正＝流出）", "").strip()
         yoy_match = re.search(r"YoY\s*[+-]?[0-9.]+B(?:\s*USD)?", interp)
@@ -291,7 +292,7 @@ def _werner_table(lending_text, bop_text, fiscal_text, mfg_text=None):
         rows.append(("長期資本外流", "日本金融帳（季資料）", val, c))
     # 民間信用/GDP
     if fiscal_text:
-        lines = [l.strip() for l in str(fiscal_text).split("\n") if l.strip()]
+        lines = [line.strip() for line in str(fiscal_text).split("\n") if line.strip()]
         val = lines[0] if lines else ""
         if "：" in val:
             val = val.split("：", 1)[1].strip()
@@ -299,9 +300,9 @@ def _werner_table(lending_text, bop_text, fiscal_text, mfg_text=None):
         rows.append(("民間信用/GDP", "民間信用 ÷ 名目GDP", val, c))
     # 製成品進口
     if mfg_text:
-        lines = [l.strip() for l in str(mfg_text).split('\n') if l.strip()]
+        lines = [line.strip() for line in str(mfg_text).split('\n') if line.strip()]
         val = lines[0] if lines else ''
-        interp = next((l for l in lines if '解讀' in l), '')
+        interp = next((line for line in lines if '解讀' in line), '')
         interp = interp.replace('解讀：', '')
         c = _color_line(interp)
         rows.append(('製成品進口', '日本進口季增率（OECD）', val + ('　' + interp if interp else ''), c))
@@ -446,7 +447,6 @@ def _build_hero_signal_html(signal_summary, verdict, cot_warning=""):
 def _build_cot_summary_html(cot_text):
     text = str(cot_text or "")
     compact = text.replace("\n", " ")
-    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
 
     report_date = ""
     net_label = ""
@@ -1234,34 +1234,20 @@ def build_html(data: dict) -> str:
 
 
 def push_to_github_pages(html: str, date_str: str) -> str:
-    """Push HTML to GitHub Pages, return public URL"""
-    import shutil, tempfile
-
-    repo_dir = os.path.expanduser("~/Desktop/投資/.gh-pages")
-
-    # clone or pull
-    if os.path.isdir(os.path.join(repo_dir, ".git")):
-        try:
-            subprocess.run(["git", "-C", repo_dir, "pull", "--rebase"], check=True,
-                           capture_output=True)
-        except Exception as exc:
-            logger.warning("git pull --rebase 失敗，繼續發佈流程: %s", exc)
+    """寫出 HTML，GitHub Pages 推送交由外部 workflow 處理。"""
+    use_dist = os.environ.get("JPY_USE_DIST") == "1"
+    if use_dist:
+        target_dir = DIST_DIR
+    elif REPO_DIR.exists():
+        target_dir = REPO_DIR
     else:
-        os.makedirs(repo_dir, exist_ok=True)
-        subprocess.run(["git", "clone", REPO_URL, repo_dir], check=True,
-                       capture_output=True)
+        target_dir = DIST_DIR
 
-    # write index.html
-    html_path = os.path.join(repo_dir, "index.html")
+    target_dir.mkdir(parents=True, exist_ok=True)
+    html_path = target_dir / "index.html"
     with open(html_path, "w", encoding="utf-8") as f:
         f.write(html)
-
-    # commit & push
-    subprocess.run(["git", "-C", repo_dir, "add", "index.html"], check=True)
-    subprocess.run(["git", "-C", repo_dir, "commit", "-m", f"週報 {date_str}"],
-                   check=True, capture_output=True)
-    subprocess.run(["git", "-C", repo_dir, "push"], check=True, capture_output=True)
-
+    logger.info("HTML 已輸出到 %s（date=%s）", html_path, date_str)
     return "https://aqua5230.github.io/jpy-weekly/"
 
 
@@ -1294,7 +1280,7 @@ if __name__ == "__main__":
         },
     }
     html = build_html(data)
-    out = os.path.expanduser("~/Desktop/投資/report_preview.html")
+    out = BASE_DIR / "report_preview.html"
     with open(out, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"預覽：{out}")

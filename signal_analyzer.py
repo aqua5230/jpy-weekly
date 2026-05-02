@@ -1,7 +1,7 @@
 import logging
 import re
 
-from utils import run_text_command
+from utils import call_deepseek
 
 logger = logging.getLogger(__name__)
 
@@ -87,4 +87,4 @@ def get_weekly_verdict(usdjpy_rate, change, cot_text, news_text, us10y, jp10y, s
         "【大戶在做什麼】本次未取得完整 AI 解讀，請搭配 COT 原始數據判讀\n"
         "【這週要盯什麼】優先看央行訊號與高影響力經濟數據"
     )
-    return run_text_command(['chatgpt', '-p', prompt], timeout=180, fallback_text=fallback)
+    return call_deepseek(prompt, timeout=180, fallback_text=fallback)

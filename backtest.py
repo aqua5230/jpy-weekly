@@ -24,8 +24,9 @@ except Exception:  # pragma: no cover - optional dependency
     RandomForestClassifier = None
 
 
+COT_BASE_DIR = Path(os.environ.get("JPY_BASE_DIR", Path(__file__).resolve().parent))
 COT_HISTORY = Path.home() / ".cot_history.json"
-LEGACY_COT_HISTORY = Path("/Users/lollapalooza/Desktop/投資/.cot_history.json")
+LEGACY_COT_HISTORY = COT_BASE_DIR / ".cot_history.json"
 LOOKBACK_WEEKS = 260
 LOOKBACK_YEARS = 5
 WEEKS_PER_YEAR = 52
@@ -353,8 +354,7 @@ def build_signal_frame():
 
     # VIX：避險情緒因子
     try:
-        import contextlib
-        with open(os.devnull, "w") as devnull, contextlib.redirect_stderr(devnull):
+        with open(os.devnull, "w") as devnull, redirect_stderr(devnull):
             vix_hist = yf.Ticker("^VIX").history(period="10y", interval="1wk", auto_adjust=False)
         if not vix_hist.empty:
             vix_series = vix_hist["Close"].copy()
