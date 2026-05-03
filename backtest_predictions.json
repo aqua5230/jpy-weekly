@@ -40,5 +40,19 @@
     "correct_8w": null,
     "status": "pending",
     "status_8w": "pending"
+  },
+  {
+    "date": "2026-05-04",
+    "werner_direction": "中性",
+    "position_score": 0,
+    "close_price": 157.03,
+    "next_1w_price": null,
+    "return_1w": null,
+    "correct_1w": null,
+    "next_8w_price": null,
+    "return_8w": null,
+    "correct_8w": null,
+    "status": "pending",
+    "status_8w": "pending"
   }
 ]
