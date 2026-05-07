@@ -110,9 +110,27 @@
 | SCH | `sudo pmset repeat wakeorpoweron M 06:55:00`，系統週一 06:55 主動喚醒 | ✅ |
 | SCH | `pmset -g sched` 確認顯示 `wakepoweron at 6:55AM Monday` | ✅ |
 | DOC | 建立 `CLAUDE.md`：啟動必讀順序、常用指令、高階架構、Werner 四原則、排程設定、硬規則 | ✅ |
+| VRF | 建立遠端 one-shot routine `trig_012ykMYChfm4Xjzboz7cEmPi`，排 2026-04-27T00:00:00Z（Asia/Taipei 週一 08:00），WebFetch `https://aqua5230.github.io/jpy-weekly/` 驗證 launchd 觸發；prompt 結尾自帶管理頁連結，跑完一次自動 disabled，需本人到 https://claude.ai/code/routines 手動刪除 | ✅ |
 
 ### 尚未開始
 | # | 任務 | 優先度 |
 |---|------|--------|
 | V1 | 2026-04-27 週一首次自動觸發驗證 | 高 |
 | M1 | 重寫 `com.jpy.monitor.plist`（加 WorkingDirectory / LANG / PATH、log 改 /tmp、token 走 `.env`）。下次 OS 登入 plist 會重新被 load，屆時又會 exit 78；若未及時修，改用 `launchctl unload -w` 永久停用 | 中 |
+
+---
+
+## Step 6｜Backtest 週末結算 fallback 2026-05-08
+
+### 背景
+- `resolve_pending_predictions()` 原本直接以 `record_date + 7d` / `+56d` 查 `price_lookup`。
+- GitHub Actions cron 在 UTC 週日 23:00 觸發時，`date.today()` 可能仍是週日；若記錄日落在週末，目標結算日也可能落在週末。
+- `price_lookup` 只含交易日，導致這類紀錄無法結算並永久維持 `pending`。
+
+### 完成項目
+| # | 任務 | 狀態 |
+|---|------|------|
+| B1 | 新增 `_find_next_trading_day_price()`，從目標日起往後最多 7 天找第一個交易日價格 | ✅ |
+| B1 | `resolve_pending_predictions()` 的 1 週 / 8 週結算改用 helper，並在成功結算時寫入 `next_1w_resolved_date` / `next_8w_resolved_date` | ✅ |
+| B1 | `__main__` 新增 `record_date=2026-04-12` 的週末 fallback 案例，驗證可用 `2026-04-20` 結算 | ✅ |
+| B1 | 驗證 `python3 backtest_v1.py`、`python3 -m py_compile backtest_v1.py`、`python3 -m pytest test_decision_engine.py test_fred_fallback.py`；`ruff` 因環境未安裝而略過 | ✅ |

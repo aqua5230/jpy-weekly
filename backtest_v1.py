@@ -7,6 +7,16 @@ from datetime import date, timedelta
 
 # Step 1：資料結構（只是一個 list of dict，不用任何 import）
 
+
+def _find_next_trading_day_price(target_date, price_lookup, max_search_days=7):
+    """從 target_date 起往後找第一個可用交易日價格。"""
+    for offset in range(max_search_days + 1):
+        current_date = target_date + timedelta(days=offset)
+        date_str = current_date.isoformat()
+        if date_str in price_lookup:
+            return date_str, price_lookup[date_str]
+    return None, None
+
 # Step 2：compute_next_week_return
 def compute_next_week_return(close_price, next_close_price):
     return (next_close_price - close_price) / close_price
@@ -138,17 +148,21 @@ def resolve_pending_predictions(records, price_lookup):
     """對每筆 pending 的紀錄同時結算 1週和 8週預測。
     回傳 (records, resolved_count, pending_count)
     """
-    import datetime as dt
     resolved_count = 0
     pending_count = 0
     for r in records:
-        record_date = dt.date.fromisoformat(r['date'])
+        record_date = date.fromisoformat(r['date'])
         # --- 結算 1週 ---
         if r.get('status') == 'pending':
-            next_1w = str(record_date + dt.timedelta(days=7))
-            if next_1w in price_lookup:
-                r['next_1w_price'] = price_lookup[next_1w]
+            next_1w_date, next_1w_price = _find_next_trading_day_price(
+                record_date + timedelta(days=7),
+                price_lookup,
+                max_search_days=7,
+            )
+            if next_1w_date is not None:
+                r['next_1w_price'] = next_1w_price
                 r['return_1w'] = (r['next_1w_price'] - r['close_price']) / r['close_price']
+                r['next_1w_resolved_date'] = next_1w_date
                 score = r['position_score']
                 if score == 0:
                     r['correct_1w'] = None
@@ -162,10 +176,15 @@ def resolve_pending_predictions(records, price_lookup):
                 pending_count += 1
         # --- 結算 8週 ---
         if r.get('status_8w') == 'pending':
-            next_8w = str(record_date + dt.timedelta(days=56))
-            if next_8w in price_lookup:
-                r['next_8w_price'] = price_lookup[next_8w]
+            next_8w_date, next_8w_price = _find_next_trading_day_price(
+                record_date + timedelta(days=56),
+                price_lookup,
+                max_search_days=7,
+            )
+            if next_8w_date is not None:
+                r['next_8w_price'] = next_8w_price
                 r['return_8w'] = (r['next_8w_price'] - r['close_price']) / r['close_price']
+                r['next_8w_resolved_date'] = next_8w_date
                 score = r['position_score']
                 if score == 0:
                     r['correct_8w'] = None
@@ -273,6 +292,32 @@ if __name__ == '__main__':
     records, resolved, pending = resolve_pending_predictions(test_records, price_lookup)
     print(f'resolved: {resolved} 筆，仍 pending: {pending} 筆')
     for r in records:
+        print(json.dumps(r, ensure_ascii=False))
+
+    print()
+    print('=== R5.4 resolve 週末 fallback 測試 ===')
+
+    weekend_records = [
+        {
+            'date': '2026-04-12',
+            'werner_direction': '升',
+            'position_score': 1,
+            'close_price': 150.00,
+            'next_1w_price': None, 'return_1w': None, 'correct_1w': None,
+            'next_8w_price': None, 'return_8w': None, 'correct_8w': None,
+            'status': 'pending', 'status_8w': 'resolved',
+        },
+    ]
+    weekend_price_lookup = {
+        '2026-04-20': 149.10,  # 2026-04-19 是週日，往後 fallback 到週一
+    }
+
+    weekend_records, weekend_resolved, weekend_pending = resolve_pending_predictions(
+        weekend_records,
+        weekend_price_lookup,
+    )
+    print(f'resolved: {weekend_resolved} 筆，仍 pending: {weekend_pending} 筆')
+    for r in weekend_records:
         print(json.dumps(r, ensure_ascii=False))
 
 

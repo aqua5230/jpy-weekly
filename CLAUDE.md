@@ -80,14 +80,17 @@ jpy_weekly_report.main()
 
 ## 排程
 
-由 launchd 單軌管理（cron 已移除週報條目）：
+GitHub Actions cron 單軌管理（2026-05-02 從本機 launchd 切換）：
 
-- plist：`~/Library/LaunchAgents/com.jpy.weekly.plist`（`WakeForJob=true`、`LANG=zh_TW.UTF-8`）
-- 執行入口：英文 symlink `~/jpy-weekly -> /Users/lollapalooza/Desktop/投資`（避開中文路徑）
-- log：`/tmp/jpy_weekly.log` + `/tmp/jpy_weekly.err`
-- 觸發：每週一 07:00；若睡眠漏跑會在下次喚醒補跑
-- 憑證靠 `run_weekly.sh` 自己 source `.env`，**不要**把 token 硬寫進 plist
-- 另有 `com.jpy.monitor` 目前壞的（last exit 78，TG_PUBLIC 寫成個人 user ID），修它前對照 `com.jpy.weekly.plist` 的修法
+- workflow：`.github/workflows/jpy_weekly.yml`（cron `0 23 * * 0` UTC = Asia/Taipei 週一 07:00 + `workflow_dispatch` 手動觸發）
+- repo：`aqua5230/jpy-weekly`（main = 程式碼、gh-pages = GitHub Pages 來源）
+- runner：ubuntu-latest + python 3.13；secrets 走 GitHub Secrets，不入 commit
+- 推送：`peaceiris/actions-gh-pages@v3` 推 `dist/` 到 `gh-pages` branch
+- 持久化：`stefanzweifel/git-auto-commit-action@v5` 把 `backtest_predictions.json`、`.cot_history.json`、`.boj_qe_cache.json`、`.calendar_cache.json` commit back 到 main（commit message 含 `[skip ci]`）
+- 手動觸發：`gh workflow run jpy_weekly.yml --repo aqua5230/jpy-weekly`
+- 看 run：`gh run list --workflow=jpy_weekly.yml --repo aqua5230/jpy-weekly --limit 5`
+- 本機 launchd（`com.jpy.weekly`、`com.jpy.monitor`）已 `launchctl disable + bootout`；plist 留檔備份；`run_weekly.sh` 留作本地手動觸發後路（`./run_weekly.sh` 仍可跑）
+- pmset 週一 06:55 wake 仍存在但已無實際用途，可日後 `sudo pmset repeat cancel`
 
 ## 跟 Claude 協作的本地約定
 

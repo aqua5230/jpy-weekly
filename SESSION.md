@@ -1,6 +1,6 @@
 # 投資專案 Session 狀態
 
-更新日期：2026-04-25
+更新日期：2026-05-08
 
 ## 專案目標
 日圓週報自動化系統 + Werner 四原則判斷引擎
@@ -30,9 +30,21 @@
 | 驗證 | 新 token `getMe` + 發送 `TG_TEST` 訊息雙重驗證通過 | - |
 | 排程 | `launchctl unload com.jpy.monitor.plist`（止血 exit 78 錯發個人 user ID） | - |
 | 排程 | `sudo pmset repeat wakeorpoweron M 06:55:00`（4/27 週一 launchd 保險：系統先醒 5 分再讓 07:00 job 觸發） | - |
+| 驗證 | 建立遠端 one-shot routine `trig_012ykMYChfm4Xjzboz7cEmPi`，4/27 08:00 Asia/Taipei WebFetch GitHub Pages 驗證；prompt 結尾自帶刪除連結避免清單堆疊 | - |
+
+## 本 Session 完成（2026-05-08）
+| # | 任務 | Commit |
+|---|------|--------|
+| B1 | 修 `backtest_v1.py` 的 `resolve_pending_predictions` 週末 bug：1 週 / 8 週結算改為從目標日起往後找最多 7 天的第一個交易日，並記錄 `next_1w_resolved_date` / `next_8w_resolved_date` | - |
+| B1 | 新增 feature spec：`specs/features/backtest-resolve-weekend-fallback.md` | - |
+| B1 | 驗證：`python3 backtest_v1.py`、`python3 -m py_compile backtest_v1.py`、`python3 -m pytest test_decision_engine.py test_fred_fallback.py` 通過；`ruff` 未安裝故略過 | - |
 
 ## 目前狀態
-4/12 週報已產出並推送（公開 + VIP）。4/13 及 4/20 週一 07:00 均未觸發（排程問題，見下方）。
+**2026-05-04：GitHub Actions cron 首次自動觸發成功**（run 25294398452，1m19s 跑完，UTC 週日 23:51 觸發），V2 驗收通過。連同 5/2 手動觸發（25248212710）共兩次成功，雲端排程穩定。
+
+**2026-05-02：週報排程已從本機 launchd 切換到 GitHub Actions cron**，雲端 workflow 首次手動觸發成功（run 25248212710，1m44s 跑完），TG 訊息／GitHub Pages／prediction log 三條輸出皆驗證通過。下次自動觸發：2026-05-04（週一）07:00 Asia/Taipei（UTC 週日 23:00）。
+
+歷史漏跑紀錄：4/12 週報為最後一次本機成功跑（手動）；4/13、4/20、4/27 三個週一本機 launchd 在系統 awake 狀態下仍 0 次觸發（`runs=0`），確認 macOS user agent calendar trigger 不可靠，故全面雲端化。
 
 2026-04-17 已開始導入規格驅動開發：
 - 新增 `AGENTS.md` 作為跨 agent 專案規則。
@@ -63,14 +75,15 @@
 | S1 | 測試基線整理與測試分類 | 中 |
 | R1 | 重構 jpy_weekly_report.py → 多模組（已有計畫） | 低（目前 381 行可接受） |
 | T1 | evaluate_jpy_direction 邊界測試補強 | 中 |
-| M1 | 重寫 `com.jpy.monitor.plist`（已 runtime unload；待比照 weekly plist 加 WorkingDirectory/LANG/PATH、log 改 /tmp、token 走 `.env`） | 中 |
-| V1 | 4/27 週一首次自動觸發驗證，檢查 `/tmp/jpy_weekly.log`（已補 pmset 保險） | 高 |
+| C1 | V2 已通過，可 `sudo pmset repeat cancel` 移除已無用的本機週一 wake | 低 |
+| C2 | 月級資源回收：本機 `run_weekly.sh`、`com.jpy.weekly.plist`、`com.jpy.monitor.plist` 可在雲端穩定跑 4-6 週後刪除 | 低 |
 
 ## 風險
-- FRED API 偶爾 timeout（D1 fallback 已有三層，但首次跑無快取）
-- 重構過程中 Telegram 發送不能中斷
-- `.gh-pages` 是 embedded git repo，需注意
-- `com.jpy.monitor.plist` 已 runtime unload；plist 檔案仍保留舊已失效 token 與錯誤 chat_id，M1 修復時一併清除（下次 OS 登入會重新 load，屆時又會 exit 78，所以 M1 在此之前要完成，或改為 `launchctl unload -w` 永久停用）
+- FRED API 偶爾 timeout（D1 fallback 已有三層）；雲端 runner 首次跑無快取，但 `.cot_history.json` 等已 commit 進 main 由 `git-auto-commit-action` 跨 run 持久化，5/2 已驗證
+- DeepSeek API 額度／網路：失敗回 fallback_text（保留報告 7 段格式），不會讓主流程掛掉
+- gh-pages branch 由 peaceiris 強制覆蓋，**不要手動編輯 gh-pages branch**，所有改動會被下次 workflow 蓋掉
+- main branch 會被 git-auto-commit-action push `data: weekly run YYYY-MM-DD [skip ci]` commit，本地長期不開機要 `git pull` 同步
+- 本機 `com.jpy.weekly`、`com.jpy.monitor` 都已 `launchctl disable + bootout`；plist 檔案保留供日後參考，OS 重 login 不會自動回來
 
 ## Telegram 頻道
 | 用途 | 環境變數 | ID |
@@ -80,5 +93,7 @@
 | 測試 | TG_TEST  | -1003777384993 |
 
 ## 對外網址
-- GitHub Pages：https://aqua5230.github.io/jpy-weekly/
-- Telegraph：每次跑產新的（最近：https://telegra.ph/日圓週報-2026年03月28日-03-28-10）
+- GitHub Pages：https://aqua5230.github.io/jpy-weekly/（5/2 改由 GitHub Actions / `peaceiris/actions-gh-pages@v3` 推到 gh-pages branch）
+- GitHub repo：https://github.com/aqua5230/jpy-weekly
+- Workflow：https://github.com/aqua5230/jpy-weekly/actions/workflows/jpy_weekly.yml
+- Telegraph：每次跑產新的
