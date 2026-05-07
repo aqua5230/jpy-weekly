@@ -145,6 +145,115 @@ class TestEvaluateJpyDirection(unittest.TestCase):
         self.assertEqual(result["supporting"], ["P3"])
         self.assertEqual(result["opposing"], ["P2"])
 
+    def test_case_7_p1_neutral_keeps_neutral_conclusion(self):
+        """
+        測試 7：P1 中性 → conclusion=中性、leader=P1
+
+        現行行為：P2/P3/P4 若非中性會被歸入 opposing，因為實作以
+        'direction == p1_direction' 判斷支持，當 p1_direction=='中性'
+        時「升」「貶」皆走 else 分支。
+
+        日後若要改 P1 中性時的歸類語意，需先寫 feature spec，
+        本測試只保護現行實作行為。
+        """
+        p1 = {"direction": "中性", "strength": "中"}
+        p2 = {"direction": "升", "strength": "弱"}
+        p3 = {"direction": "升", "strength": "弱"}
+        p4 = {"direction": "中性", "strength": "弱"}
+
+        result = evaluate_jpy_direction(p1, p2, p3, p4)
+
+        self.assertEqual(result["direction"], "中性")
+        self.assertEqual(result["leader"], "P1")
+        self.assertEqual(result["supporting"], [])
+        self.assertEqual(result["opposing"], ["P2", "P3"])
+        self.assertIn(result["confidence"], ["高", "中", "低"])
+
+    def test_case_8_p1_weak_two_oppose_one_neutral_keeps_p1(self):
+        """
+        測試 8: P1弱升 + 兩個反對 + 一個中性
+        → 反對不滿 3 個，結論仍保持 P1
+        """
+        p1 = {"direction": "升", "strength": "弱"}
+        p2 = {"direction": "貶", "strength": "中"}
+        p3 = {"direction": "貶", "strength": "中"}
+        p4 = {"direction": "中性", "strength": "弱"}
+
+        result = evaluate_jpy_direction(p1, p2, p3, p4)
+
+        self.assertEqual(result["direction"], "升")
+        self.assertEqual(result["leader"], "P1")
+        self.assertEqual(result["supporting"], [])
+        self.assertEqual(result["opposing"], ["P2", "P3"])
+        self.assertEqual(len(result["opposing"]), 2)
+
+    def test_case_9_p4_strong_support_no_penalty(self):
+        """
+        測試 9: P4強支持時只有強度差，沒有額外懲罰
+        → 與 P4 中支持版本相比，score 只差 1.0
+        """
+        p1 = {"direction": "升", "strength": "中"}
+        p2 = {"direction": "升", "strength": "弱"}
+        p3 = {"direction": "升", "strength": "弱"}
+        p4_medium = {"direction": "升", "strength": "中"}
+        p4_strong = {"direction": "升", "strength": "強"}
+
+        result_medium = evaluate_jpy_direction(p1, p2, p3, p4_medium)
+        result_strong = evaluate_jpy_direction(p1, p2, p3, p4_strong)
+
+        self.assertEqual(result_strong["score"] - result_medium["score"], 1.0)
+
+    def test_case_10_p2_strong_oppose_does_not_lead(self):
+        """
+        測試 10: P2 即使強反對也不會主導結論
+        → direction 仍跟隨 P1
+        """
+        p1 = {"direction": "升", "strength": "強"}
+        p2 = {"direction": "貶", "strength": "強"}
+        p3 = {"direction": "中性", "strength": "弱"}
+        p4 = {"direction": "中性", "strength": "弱"}
+
+        result = evaluate_jpy_direction(p1, p2, p3, p4)
+
+        self.assertEqual(result["direction"], "升")
+        self.assertEqual(result["leader"], "P1")
+        self.assertIn("P2", result["opposing"])
+
+    def test_case_11_score_boundary_confidence(self):
+        """
+        測試 11: score 邊界對應 confidence
+        → >=2 為高、[0,2) 為中、<0 為低
+        """
+        high_result = evaluate_jpy_direction(
+            {"direction": "升", "strength": "強"},
+            {"direction": "升", "strength": "弱"},
+            {"direction": "升", "strength": "弱"},
+            {"direction": "升", "strength": "弱"},
+        )
+        medium_result = evaluate_jpy_direction(
+            {"direction": "升", "strength": "弱"},
+            {"direction": "中性", "strength": "弱"},
+            {"direction": "中性", "strength": "弱"},
+            {"direction": "中性", "strength": "弱"},
+        )
+        low_result = evaluate_jpy_direction(
+            {"direction": "升", "strength": "弱"},
+            {"direction": "貶", "strength": "強"},
+            {"direction": "貶", "strength": "強"},
+            {"direction": "中性", "strength": "弱"},
+        )
+
+        self.assertEqual(high_result["score"], 3.5)
+        self.assertEqual(high_result["confidence"], "高")
+
+        self.assertEqual(medium_result["score"], 0.5)
+        self.assertEqual(medium_result["confidence"], "中")
+
+        self.assertEqual(low_result["direction"], "升")
+        self.assertEqual(low_result["score"], -3.5)
+        self.assertEqual(low_result["confidence"], "低")
+        self.assertEqual(low_result["opposing"], ["P2", "P3"])
+
 
 if __name__ == "__main__":
     unittest.main()
