@@ -18,3 +18,12 @@ tests/__pycache__/
 *.bak.*
 dist/
 .last_weekly_run_date
+
+# 內部開發文件（保留本機，不進公開 repo）
+CLAUDE.md
+AGENTS.md
+SKILL.md
+SESSION.md
+TASK_LOG.md
+shared_context.md
+specs/
