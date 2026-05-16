@@ -185,7 +185,6 @@ class TestEvaluateJpyDirection(unittest.TestCase):
         self.assertEqual(result["leader"], "P1")
         self.assertEqual(result["supporting"], [])
         self.assertEqual(result["opposing"], ["P2", "P3"])
-        self.assertEqual(len(result["opposing"]), 2)
 
     def test_case_9_p4_strong_support_no_penalty(self):
         """
@@ -217,7 +216,7 @@ class TestEvaluateJpyDirection(unittest.TestCase):
 
         self.assertEqual(result["direction"], "升")
         self.assertEqual(result["leader"], "P1")
-        self.assertIn("P2", result["opposing"])
+        self.assertEqual(result["opposing"], ["P2"])
 
     def test_case_11_score_boundary_confidence(self):
         """
@@ -253,6 +252,25 @@ class TestEvaluateJpyDirection(unittest.TestCase):
         self.assertEqual(low_result["score"], -3.5)
         self.assertEqual(low_result["confidence"], "低")
         self.assertEqual(low_result["opposing"], ["P2", "P3"])
+
+    def test_case_12_p1_strong_fall_all_support(self):
+        """
+        測試 12: 測試 1 的鏡像 — P1強貶 + P2~P4全支持
+        → direction=貶, confidence=高
+        確保「升」方向通過的條件在「貶」方向同樣成立。
+        """
+        p1 = {"direction": "貶", "strength": "強"}
+        p2 = {"direction": "貶", "strength": "中"}
+        p3 = {"direction": "貶", "strength": "中"}
+        p4 = {"direction": "貶", "strength": "中"}
+
+        result = evaluate_jpy_direction(p1, p2, p3, p4)
+
+        self.assertEqual(result["direction"], "貶")
+        self.assertEqual(result["confidence"], "高")
+        self.assertEqual(result["leader"], "P1")
+        self.assertEqual(result["supporting"], ["P2", "P3", "P4"])
+        self.assertEqual(result["opposing"], [])
 
 
 if __name__ == "__main__":
