@@ -6,8 +6,8 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from test_image import draw_card
-from test_telegraph import create_telegraph_account, publish_to_telegraph, build_nodes
+from card_renderer import draw_card
+from telegraph_publisher import create_telegraph_account, publish_to_telegraph, build_nodes
 import requests
 from config import TG_TOKEN, TG_PUBLIC
 

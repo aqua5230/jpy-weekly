@@ -27,8 +27,8 @@ from data_fetcher import (
     get_japan_bank_lending, get_bop_analysis, get_fiscal_financing,
     get_manufactured_imports, get_eurjpy, get_rsi, get_entry_exit_levels,
 )
-from test_image import draw_card
-from test_telegraph import create_telegraph_account, publish_to_telegraph, build_nodes
+from card_renderer import draw_card
+from telegraph_publisher import create_telegraph_account, publish_to_telegraph, build_nodes
 from build_html_report import build_html, push_to_github_pages
 from decision_engine import evaluate_jpy_direction
 from report_builder import (
