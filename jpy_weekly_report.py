@@ -40,6 +40,16 @@ from telegram_sender import send_emergency_telegram, build_direction_summary, se
 from backtest_v1 import log_prediction, load_prediction_log, save_prediction_log, resolve_pending_predictions
 from utils import check_compliance
 
+# JPY_DRY_RUN=1 → 跑完整流程但跳過所有對外發送
+#   ├ push_to_github_pages（gh-pages branch）
+#   ├ publish_to_telegraph（新 Telegraph 文章）
+#   ├ send_public_report（TG_PUBLIC 頻道）
+#   ├ send_vip_report（TG_VIP 頻道）
+#   └ send_emergency_telegram（崩潰告警）
+# 用途：本地驗證 import / data_fetcher / decision_engine / report_builder 全流程
+# 而不污染公開頻道與 GitHub Pages
+DRY_RUN = os.getenv("JPY_DRY_RUN", "0") == "1"
+
 logging.basicConfig(
     filename=LOG_FILE,
     level=logging.INFO,
@@ -68,6 +78,8 @@ def send_data_health_alert(failures):
 
 def main():
     logger.info("正在產生本週日圓投資報告")
+    if DRY_RUN:
+        logger.warning("⚠️  JPY_DRY_RUN=1 — 跳過所有對外發送（GitHub Pages / Telegraph / Telegram）")
 
     data_failures = []
 
@@ -427,25 +439,38 @@ def main():
 
         # 保留 GitHub Pages 產出，不影響既有報告流程
         html_report = build_html(card_data)
-        gh_url = push_to_github_pages(html_report, now)
-        logger.info("GitHub Pages 已更新 %s", gh_url)
+        if DRY_RUN:
+            logger.info("[dry-run] 跳過 push_to_github_pages（html %d bytes）", len(html_report))
+        else:
+            gh_url = push_to_github_pages(html_report, now)
+            logger.info("GitHub Pages 已更新 %s", gh_url)
 
         # 發佈 Telegraph，供 VIP 取得完整網址
         tg_nodes = build_nodes(card_data)
-        telegraph_url = publish_to_telegraph(tg_ph_token, f"日圓週報　{now}", tg_nodes)
+        if DRY_RUN:
+            telegraph_url = "(dry-run skipped)"
+            logger.info("[dry-run] 跳過 publish_to_telegraph（%d nodes）", len(tg_nodes))
+        else:
+            telegraph_url = publish_to_telegraph(tg_ph_token, f"日圓週報　{now}", tg_nodes)
 
         summary = build_direction_summary(verdict, direction, change)
 
         check_compliance(report)
-        public_result = send_public_report(img_path, summary)
-        if public_result.json().get('ok'):
-            logger.info("公開 Telegram 已送出")
+        if DRY_RUN:
+            logger.info("[dry-run] 跳過 send_public_report（summary %d 字）", len(summary))
         else:
-            logger.error("公開 Telegram 發送失敗：%s", public_result.json())
+            public_result = send_public_report(img_path, summary)
+            if public_result.json().get('ok'):
+                logger.info("公開 Telegram 已送出")
+            else:
+                logger.error("公開 Telegram 發送失敗：%s", public_result.json())
 
-        send_vip_report(report, img_path, telegraph_url)
-        if TG_VIP:
-            logger.info("VIP Telegram 已送出 %s", telegraph_url)
+        if DRY_RUN:
+            logger.info("[dry-run] 跳過 send_vip_report（report %d 字）", len(report))
+        else:
+            send_vip_report(report, img_path, telegraph_url)
+            if TG_VIP:
+                logger.info("VIP Telegram 已送出 %s", telegraph_url)
     except Exception as exc:
         logger.exception("發送失敗：%s", exc)
 
@@ -455,5 +480,8 @@ if __name__ == '__main__':
         main()
     except Exception as exc:
         logger.exception("jpy_weekly_report.py 執行崩潰: %s", exc)
-        send_emergency_telegram("jpy_weekly_report.py", exc)
+        if DRY_RUN:
+            logger.warning("[dry-run] 跳過 send_emergency_telegram")
+        else:
+            send_emergency_telegram("jpy_weekly_report.py", exc)
         raise
