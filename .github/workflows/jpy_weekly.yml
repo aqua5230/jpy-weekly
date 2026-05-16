@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 23 * * 0'
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '只跑流程不發送（不推 gh-pages、不發 TG、不 commit 資料）'
+        type: boolean
+        default: false
 
 concurrency:
   group: weekly
@@ -56,9 +61,12 @@ jobs:
         run: echo "value=$(TZ=Asia/Taipei date +%F)" >> "$GITHUB_OUTPUT"
 
       - name: Generate weekly report
+        env:
+          JPY_DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
         run: python jpy_weekly_report.py
 
       - name: Publish GitHub Pages
+        if: ${{ !inputs.dry_run }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,6 +74,7 @@ jobs:
           publish_branch: gh-pages
 
       - name: Commit back data files
+        if: ${{ !inputs.dry_run }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "data: weekly run ${{ steps.run-date.outputs.value }} [skip ci]"
